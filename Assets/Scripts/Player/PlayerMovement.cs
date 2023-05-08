@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
     [Header("Components")]
     public CharacterController controller;
+    public PlayerState playerState;
 
     [Header("Movement")]
     public float baseSpeed = 2f;
@@ -14,23 +15,34 @@ public class PlayerMovement : MonoBehaviour {
     [Header("Gravity")]
     public Vector3 gravityDirection = new Vector3(0f, -1f, 0f);
     public float gravity = 10f;
+    public Transform groundCheck;
+    public float groundDistance = 0.25f;
+    public LayerMask groundMask;
 
     [Header("State")]
     public float currentSpeed;
     public Vector3 move;
     public Vector3 velocity;
-    public bool isGrounded;
     public float inputX;
     public float inputZ;
+    public bool isGrounded = false;
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.R)) controller.Move(new Vector3(0, 2, 0) - transform.position);
+        if (Input.GetKeyDown(KeyCode.R)) {
+            controller.Move(new Vector3(0, 2, 0) - transform.position);
+            playerState.isDead = false;
+        }
+
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         // Apply downwords velocity of player is not on the ground
-        if (controller.isGrounded && velocity.y < 0) velocity = gravityDirection * 2;
+        // if (controller.isGrounded && velocity.y < 0) velocity = gravityDirection * 2;
+        if (isGrounded && velocity.y * GravityDirectionPositiveOrNegative() > 0) velocity = gravityDirection * 2;
 
         currentSpeed = baseSpeed;
         if (move.magnitude == 0f) currentSpeed = 0f;
+
+        if (playerState.isDead) return;
 
         SetRunning();
         SetMovement();
@@ -61,5 +73,9 @@ public class PlayerMovement : MonoBehaviour {
         // Limit velocity
         float velocityMagnitude = velocity.magnitude;
         if (velocityMagnitude > gravity) velocity = velocity.normalized * gravity;
+    }
+
+    private float GravityDirectionPositiveOrNegative() {
+        return gravityDirection.x + gravityDirection.y + gravityDirection.z;
     }
 }

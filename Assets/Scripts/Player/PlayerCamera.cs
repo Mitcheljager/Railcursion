@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour {
     public float mouseSensitivity = 25f;
     public Transform playerBody;
+    public PlayerState playerState;
 
     private float xRotation = 0f;
 
@@ -13,6 +14,7 @@ public class PlayerCamera : MonoBehaviour {
 
     void Update() {
         if(Cursor.lockState != CursorLockMode.Locked) return;
+        if (playerState.isDead) return;
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;

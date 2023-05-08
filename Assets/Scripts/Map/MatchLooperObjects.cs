@@ -1,0 +1,32 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MatchLooperPlayerObjects : MonoBehaviour {
+    public GameObject prefab;
+    public SceneLooper sceneLooper;
+
+    private List<GameObject> matchingObjects;
+
+    void Start() {
+        DuplicateObjects();
+    }
+
+    void Update() {
+        // Match the transform of the duplicated objects to the transform of the original object
+        foreach (GameObject matchingObject in matchingObjects) {
+            Vector3 offset = matchingObject.GetComponent<MatchingLoopedObject>().offset;
+
+            // Debug.Log(offset);
+
+            matchingObject.transform.position = transform.position + offset;
+            matchingObject.transform.rotation = transform.rotation;
+        }
+    }
+
+    private void DuplicateObjects() {
+        List<GameObject> gameObjects = new List<GameObject>();
+        gameObjects.Add(prefab);
+
+        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true);
+    }
+}

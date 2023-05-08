@@ -9,10 +9,13 @@ public class TeleportTrigger : MonoBehaviour {
     public bool readyToBeTeleported = false;
 
     void OnTriggerEnter(Collider player) {
+        if (player.tag != "Player") return;
+
         readyToBeTeleported = true;
     }
 
     void OnTriggerExit(Collider player) {
+        if (player.tag != "Player") return;
         if (!readyToBeTeleported) return;
 
         Teleport(player);

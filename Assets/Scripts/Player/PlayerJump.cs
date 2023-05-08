@@ -17,14 +17,11 @@ public class PlayerJump : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space)) isJumping = true;
         if (Input.GetKeyUp(KeyCode.Space)) isJumping = false;
 
-        if (!characterController.isGrounded) return;
-        if (isJumping) Jump();
-    }
-
-    void FixedUpdate() {
+        if (playerMovement.isGrounded && isJumping) Jump();
     }
 
     private void Jump() {
+        Debug.Log("Jump");
         float jumpVelocity = Mathf.Sqrt(jumpForce * 2f * playerMovement.gravity);
         playerMovement.velocity = playerMovement.gravityDirection * jumpVelocity * -1f;
     }
