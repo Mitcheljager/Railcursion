@@ -10,18 +10,19 @@ public class SceneLooper : MonoBehaviour {
         DuplicateSceneObjects(objectsToDuplicate);
     }
 
-    public List<GameObject> DuplicateSceneObjects(List<GameObject> objects, bool applyOffsetComponent = false) {
+    public List<GameObject> DuplicateSceneObjects(List<GameObject> objects, bool applyOffsetComponent = false, int countOverwrite = 0) {
         // Calculate the total number of duplicates in each direction
-        int totalDuplicationCount = (2 * duplicationCount + 1) * (2 * duplicationCount + 1) * (2 * duplicationCount + 1);
+        int count = countOverwrite > 0 ? countOverwrite : duplicationCount;
+        int totalDuplicationCount = (2 * count + 1) * (2 * count + 1) * (2 * count + 1);
 
         List<GameObject> duplicatedObjects = new List<GameObject>();
 
         // Iterate over the objects to duplicate
         foreach (GameObject gameObject in objects) {
             // Duplicate the object and position the duplicates in a grid pattern
-            for (int i = -duplicationCount; i <= duplicationCount; i++) {
-                for (int j = -duplicationCount; j <= duplicationCount; j++) {
-                    for (int k = -duplicationCount; k <= duplicationCount; k++) {
+            for (int i = -count; i <= count; i++) {
+                for (int j = -count; j <= count; j++) {
+                    for (int k = -count; k <= count; k++) {
                         Vector3 currentOffset = new Vector3(i * duplicationOffset.x, j * duplicationOffset.y, k * duplicationOffset.z);
                         if (currentOffset.magnitude == 0) continue;
 
@@ -30,7 +31,6 @@ public class SceneLooper : MonoBehaviour {
                         if (applyOffsetComponent) {
                             MatchingLoopedObject matchingLoopedObject = duplicate.AddComponent<MatchingLoopedObject>();
                             matchingLoopedObject.offset = duplicate.transform.position;
-                            Debug.Log(matchingLoopedObject.offset);
                         }
 
                         duplicatedObjects.Add(duplicate);

@@ -29,7 +29,9 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.R)) {
-            controller.Move(new Vector3(0, 2, 0) - transform.position);
+            controller.enabled = false; // Disable collision
+            transform.position = new Vector3(0, 2, 0);
+            controller.enabled = true; // Enable collision
             playerState.isDead = false;
         }
 
@@ -37,7 +39,7 @@ public class PlayerMovement : MonoBehaviour {
 
         // Apply downwords velocity of player is not on the ground
         // if (controller.isGrounded && velocity.y < 0) velocity = gravityDirection * 2;
-        if (isGrounded && velocity.y * GravityDirectionPositiveOrNegative() > 0) velocity = gravityDirection * 2;
+        if (isGrounded && IsGravityPositive()) velocity = gravityDirection * 2;
 
         currentSpeed = baseSpeed;
         if (move.magnitude == 0f) currentSpeed = 0f;
@@ -75,7 +77,7 @@ public class PlayerMovement : MonoBehaviour {
         if (velocityMagnitude > gravity) velocity = velocity.normalized * gravity;
     }
 
-    private float GravityDirectionPositiveOrNegative() {
-        return gravityDirection.x + gravityDirection.y + gravityDirection.z;
+    private bool IsGravityPositive() {
+        return velocity.y * (gravityDirection.x + gravityDirection.y + gravityDirection.z) > 0;
     }
 }
