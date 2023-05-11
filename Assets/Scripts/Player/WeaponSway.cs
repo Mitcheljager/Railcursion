@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class WeaponSway : MonoBehaviour {
     [Header("Config")]
-    public float smoothnessMultiplier = 10;
-    public float distanceMultiplier = 1;
+    public float smoothnessMultiplier = 10f;
+    public float distanceMultiplier = 1f;
 
     private void Update() {
         // get mouse input

@@ -2,23 +2,35 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour {
     [Header("Config")]
-    public int maxDistance = 1000;
     public Transform cameraTransform;
-
+    public int maxDistance = 1000;
+    public float cooldown = 2f;
+    [Header("Audio")]
+    public AudioHelper[] audioHelpers;
     [Header("Mask")]
     public LayerMask layerMask;
-
+    [Header("State")]
+    public float currentCooldown = 0f;
 
     void Start() {
 
     }
 
     void Update() {
+        if (currentCooldown > 0f) {
+            currentCooldown -= Time.deltaTime;
+            return;
+        }
+
         if (!Input.GetMouseButton(0)) return;
 
-        GameObject target = GetTarget();
+        currentCooldown = cooldown;
 
-        Debug.Log("Target: " + target);
+        foreach (AudioHelper audioHelper in audioHelpers){
+            audioHelper.PlayRandomClip();
+        }
+
+        GameObject target = GetTarget();
 
         if (!target) return;
         if (target.tag != "Player" && target.tag != "DuplicatedPlayer") return;
@@ -32,7 +44,6 @@ public class PlayerWeapon : MonoBehaviour {
     public GameObject GetTarget() {
         Debug.Log("Fire!");
 
-		//Check for Collider with Raycast
 		RaycastHit raycastHit;
 		Vector3 position = cameraTransform.position;
 		Vector3 target = position + cameraTransform.forward * maxDistance;

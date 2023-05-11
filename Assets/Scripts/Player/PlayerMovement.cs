@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour {
     [Header("Gravity")]
     public Vector3 gravityDirection = new Vector3(0f, -1f, 0f);
     public float gravity = 10f;
+    public float maxVelocity = 120f;
     public Transform groundCheck;
     public float groundDistance = 0.25f;
     public LayerMask groundMask;
@@ -74,10 +75,10 @@ public class PlayerMovement : MonoBehaviour {
 
         // Limit velocity
         float velocityMagnitude = velocity.magnitude;
-        if (velocityMagnitude > gravity) velocity = velocity.normalized * gravity;
+        if (velocityMagnitude > maxVelocity) velocity = velocity.normalized * maxVelocity;
     }
 
-    private bool IsGravityPositive() {
+    public bool IsGravityPositive() {
         return velocity.y * (gravityDirection.x + gravityDirection.y + gravityDirection.z) > 0;
     }
 }

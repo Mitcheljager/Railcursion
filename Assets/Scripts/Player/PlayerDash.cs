@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDash : MonoBehaviour {
+    [Header("Config")]
+    public AudioHelper audioHelper;
     [Header("Dash")]
     public float dashForce = 10f;
     public float upwardForce = 1f;
@@ -41,5 +43,7 @@ public class PlayerDash : MonoBehaviour {
 
         playerMovement.velocity += dashDirection * dashForce;
         canDash = false;
+
+        audioHelper.PlayWithRandomPitch();
     }
 }
