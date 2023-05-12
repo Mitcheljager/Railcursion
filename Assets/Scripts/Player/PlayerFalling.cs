@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerFalling : MonoBehaviour {
-    [Header("Audio")]
+    [Header("Audio Falling")]
     public AudioSource audioSource;
     public float maximumVolume = 0.2f;
+    [Header("Audio Landing")]
+    public AudioHelper audioHelperLanding;
 
     [Header("Velocity")]
     public float minimumVelocity = 60f;
@@ -21,6 +23,7 @@ public class PlayerFalling : MonoBehaviour {
 
     public bool hasLanded = false;
     private Vector3 shoulderOriginalPosition;
+    private float highestVelocityWhileFalling;
 
     void Start() {
         playerMovement = GetComponent<PlayerMovement>();
@@ -32,16 +35,28 @@ public class PlayerFalling : MonoBehaviour {
     void Update() {
         MoveWhileFalling();
 
-        if (!playerMovement.isGrounded) MoveWhileFalling();
+        Debug.Log(highestVelocityWhileFalling);
+
+        if (!playerMovement.isGrounded) {
+            hasLanded = false;
+            MoveWhileFalling();
+        }
+
+        if (playerMovement.isGrounded && !hasLanded) {
+            hasLanded = true;
+            PlayLandingAudio();
+        }
 
         if (playerMovement.velocity.magnitude < minimumVelocity) {
             if (audioSource.isPlaying) audioSource.Stop();
             return;
         }
 
-        if (!playerMovement.isGrounded && hasLanded) hasLanded = false;
-
         SetVolume();
+    }
+
+    void LateUpdate() {
+        highestVelocityWhileFalling = Mathf.Max(playerMovement.velocity.magnitude, highestVelocityWhileFalling);
     }
 
     private void SetVolume() {
@@ -57,5 +72,11 @@ public class PlayerFalling : MonoBehaviour {
         Vector3 targetPosition = new Vector3(0, distance, 0);
 
         shoulderTransform.localPosition = Vector3.Slerp(shoulderTransform.localPosition, targetPosition, animationSpeed * Time.deltaTime);
+    }
+
+    private void PlayLandingAudio() {
+        audioHelperLanding.audioSource.volume = Mathf.Max(0.1f, Mathf.InverseLerp(minimumVelocity, maximumVelocity, highestVelocityWhileFalling));
+        audioHelperLanding.PlayRandomClip();
+        highestVelocityWhileFalling = 0f;
     }
 }

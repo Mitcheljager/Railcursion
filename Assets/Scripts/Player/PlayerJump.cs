@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour {
     [Header("Config")]
-    public AudioHelper audioHelper;
+    public AudioHelper[] audioHelpers;
     [Header("Config")]
     public float jumpForce = 5f;
     [Header("State")]
@@ -34,6 +34,8 @@ public class PlayerJump : MonoBehaviour {
         float jumpVelocity = Mathf.Sqrt(jumpForce * 2f * playerMovement.gravity);
         playerMovement.velocity = playerMovement.gravityDirection * jumpVelocity * -1f;
 
-        audioHelper.PlayRandomClip();
+        foreach(AudioHelper audioHelper in audioHelpers) {
+            audioHelper.PlayRandomClip();
+        }
     }
 }

@@ -9,7 +9,7 @@ public class AudioHelper : MonoBehaviour {
     [Header("AudioHelper Optional")]
     public AudioClip[] audioClips;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
