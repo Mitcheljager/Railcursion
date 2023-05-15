@@ -14,7 +14,6 @@ public class Railgun : MonoBehaviour {
     public float recoilDuration = 0.1f;
     public float recoilRecoveryDuration = 0.5f;
     [Header("Effect")]
-    public GameObject effectPrefab;
     public Transform effectOrigin;
     public MatchLooperObjects matchLooperObjects;
     public float destroyDelay = 2f;
@@ -27,11 +26,13 @@ public class Railgun : MonoBehaviour {
     public float currentCooldown = 0f;
     public float currentRecoilTimer = 0f;
 
+    private ObjectPool objectPool;
     private Vector3 gunOriginalPosition;
     private bool isRecoiling = false;
 
     void Start() {
         gunOriginalPosition = gunTransform.localPosition;
+        objectPool = GetComponent<ObjectPool>();
     }
 
     void Update() {
@@ -73,17 +74,16 @@ public class Railgun : MonoBehaviour {
 		Vector3 target = position + cameraTransform.forward * maxDistance;
         Vector3 direction = (target - position).normalized;
 
-
         Debug.DrawLine(position, target, Color.red);
 
         if (!Physics.Linecast(position, target, out raycastHit, layerMask)) {
-            CreateEffects(direction, maxEffectDistance);
+            ShowEffects(direction, maxEffectDistance);
             return null;
         }
 
         float distance = Vector3.Distance(effectOrigin.position, raycastHit.point);
         direction = (raycastHit.point - effectOrigin.position).normalized;
-        CreateEffects(direction, distance);
+        ShowEffects(direction, distance);
 
         Debug.DrawLine(position, raycastHit.transform.position, Color.yellow);
 
@@ -93,20 +93,19 @@ public class Railgun : MonoBehaviour {
         return raycastHit.collider.gameObject;
 	}
 
-    private void CreateEffects(Vector3 direction, float length) {
-        Debug.Log("Length: " + length);
-        CreateAndDestroyEffect(effectOrigin.position, direction, length);
+    private void ShowEffects(Vector3 direction, float length) {
+        Debug.Log("Create effects");
+        ShowObjectFromObjectPool(effectOrigin.position, direction, length);
 
-        // [TODO]: Use object pooling instead
         foreach(GameObject matchingObject in matchLooperObjects.matchingObjects) {
             Vector3 offset = matchingObject.GetComponent<MatchingLoopedObject>().offset;
 
-            CreateAndDestroyEffect(effectOrigin.position + offset, direction, length);
+            ShowObjectFromObjectPool(effectOrigin.position + offset, direction, length);
         }
     }
 
-    private void CreateAndDestroyEffect(Vector3 position, Vector3 direction, float length) {
-        GameObject effect = Instantiate(effectPrefab);
+    private void ShowObjectFromObjectPool(Vector3 position, Vector3 direction, float length) {
+        GameObject effect = objectPool.GetObject();
 
         effect.transform.position = position;
         effect.transform.rotation = Quaternion.LookRotation(direction);
@@ -114,7 +113,7 @@ public class Railgun : MonoBehaviour {
         VisualEffect visualEffect = effect.GetComponent<VisualEffect>();
         visualEffect.SetFloat("Length", length);
 
-        Destroy(effect, destroyDelay);
+        StartCoroutine(objectPool.DelaySetInactive(effect, destroyDelay));
     }
 
     private void MoveRecoil() {
@@ -145,5 +144,4 @@ public class Railgun : MonoBehaviour {
 
         isRecoiling = false;
     }
-
 }

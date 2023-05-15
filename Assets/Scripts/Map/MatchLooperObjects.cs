@@ -5,7 +5,7 @@ public class MatchLooperObjects : MonoBehaviour {
     public GameObject prefab;
     public SceneLooper sceneLooper;
     [Header("Config")]
-    public int countOverwrite = 0;
+    public float countMultiplier = 1f;
     [Header("State")]
     public List<GameObject> matchingObjects;
 
@@ -31,7 +31,7 @@ public class MatchLooperObjects : MonoBehaviour {
         List<GameObject> gameObjects = new List<GameObject>();
         gameObjects.Add(prefab);
 
-        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true, countOverwrite);
+        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true, countMultiplier);
         if (playerReference != null) {
             foreach (GameObject gameObject in matchingObjects) {
                 PlayerReference gameObjectPlayerReference = gameObject.GetComponent<PlayerReference>();

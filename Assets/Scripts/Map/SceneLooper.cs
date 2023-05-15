@@ -3,26 +3,24 @@ using UnityEngine;
 
 public class SceneLooper : MonoBehaviour {
     public List<GameObject> objectsToDuplicate;
-    public int duplicationCount = 3;
+    public Vector3 duplicationCount = new Vector3(3, 3, 3);
     public Vector3 duplicationOffset = new Vector3(100f, 100f, 100f);
 
     private void Start() {
         DuplicateSceneObjects(objectsToDuplicate);
     }
 
-    public List<GameObject> DuplicateSceneObjects(List<GameObject> objects, bool applyOffsetComponent = false, int countOverwrite = 0) {
+    public List<GameObject> DuplicateSceneObjects(List<GameObject> objects, bool applyOffsetComponent = false, float countMultiplier = 1) {
         // Calculate the total number of duplicates in each direction
-        int count = countOverwrite > 0 ? countOverwrite : duplicationCount;
-        int totalDuplicationCount = (2 * count + 1) * (2 * count + 1) * (2 * count + 1);
-
+        Vector3 counts = duplicationCount * countMultiplier;
         List<GameObject> duplicatedObjects = new List<GameObject>();
 
         // Iterate over the objects to duplicate
         foreach (GameObject gameObject in objects) {
             // Duplicate the object and position the duplicates in a grid pattern
-            for (int i = -count; i <= count; i++) {
-                for (int j = -count; j <= count; j++) {
-                    for (int k = -count; k <= count; k++) {
+            for (int i = Mathf.RoundToInt(-counts.x); i <= Mathf.RoundToInt(counts.x); i++) {
+                for (int j = Mathf.RoundToInt(-counts.y); j <= Mathf.RoundToInt(counts.y); j++) {
+                    for (int k = Mathf.RoundToInt(-counts.z); k <= Mathf.RoundToInt(counts.z); k++) {
                         Vector3 currentOffset = new Vector3(i * duplicationOffset.x, j * duplicationOffset.y, k * duplicationOffset.z);
                         if (currentOffset.magnitude == 0) continue;
 
