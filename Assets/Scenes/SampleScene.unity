@@ -1007,6 +1007,7 @@ MonoBehaviour:
   prefab: {fileID: 4138355334505047678, guid: d6c29faab3e69294a945962c1cff5506, type: 3}
   sceneLooper: {fileID: 1799161729}
   countOverwrite: 2
+  matchingObjects: []
 --- !u!114 &113221898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1579,9 +1580,9 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.8, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1611729510}
+  - {fileID: 375385999}
   m_Father: {fileID: 722828920}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: -90}
 --- !u!136 &340652952
 CapsuleCollider:
@@ -1661,7 +1662,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 330585546}
   maxDistance: 1000
-  cooldown: 2
+  cooldown: 0.5
+  gunTransform: {fileID: 340652951}
+  recoilDistance: -0.25
+  recoilDuration: 0.05
+  recoilRecoveryDuration: 0.2
+  effectPrefab: {fileID: 4662568731369538969, guid: ff937ea436050024ead439ee559e28a0,
+    type: 3}
+  effectOrigin: {fileID: 375385999}
+  matchLooperObjects: {fileID: 113221897}
+  destroyDelay: 2
+  maxEffectDistance: 200
   audioHelpers:
   - {fileID: 1488804565}
   - {fileID: 1856189993}
@@ -1669,6 +1680,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 137
   currentCooldown: 0
+  currentRecoilTimer: 0
 --- !u!1 &345401341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,6 +1937,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 371252537}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &375385998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 375385999}
+  m_Layer: 6
+  m_Name: Nozzle Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &375385999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375385998}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000014901161, w: 1}
+  m_LocalPosition: {x: 0, y: 0.6249998, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 340652951}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,6 +2553,7 @@ MonoBehaviour:
   minPitch: 0.9
   maxPitch: 1.1
   audioClips: []
+  audioSource: {fileID: 0}
 --- !u!1 &585620561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2976,6 +3020,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1611729510}
   - {fileID: 340652951}
   m_Father: {fileID: 330585546}
   m_RootOrder: 0
@@ -3470,6 +3515,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 94617a00dc0f4064f808d613470a6bfd, type: 3}
   - {fileID: 8300000, guid: e8380b08fc887e24a8e3b8ac110a1d7b, type: 3}
   - {fileID: 8300000, guid: 517e75a020f0eb64e87e54b9f9aa5571, type: 3}
+  audioSource: {fileID: 0}
 --- !u!1 &830737450
 GameObject:
   m_ObjectHideFlags: 0
@@ -4928,6 +4974,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ad5378147d4db5544a9571ac279460b2, type: 3}
   - {fileID: 8300000, guid: 945dcbf7d3b90b3429c8d6670791623e, type: 3}
   - {fileID: 8300000, guid: 06966180b8f79a54490fbaf147b62c37, type: 3}
+  audioSource: {fileID: 0}
 --- !u!82 &1488804566
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4941,7 +4988,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 166de97f15c34664bb21b3d2a1575486, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5083,6 +5130,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cd5a8f135a4776349868204df05862b5, type: 3}
   - {fileID: 8300000, guid: 78c023d0ba43fae4e881acf9f922ce9e, type: 3}
   - {fileID: 8300000, guid: e9b939129c762d041bfc27b4bb9a5876, type: 3}
+  audioSource: {fileID: 0}
 --- !u!82 &1491008986
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5482,6 +5530,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 37d8667bfd5c5f148a78bb594c49b23d, type: 3}
   - {fileID: 8300000, guid: f501482e33389a04d84f4a81fe2e6322, type: 3}
   - {fileID: 8300000, guid: 033ed1abd6b468442958bbcadce4bf3d, type: 3}
+  audioSource: {fileID: 0}
 --- !u!82 &1566119018
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5602,14 +5651,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611729509}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.4999986, y: -0.49999994, z: -0.50000006, w: 0.50000143}
+  m_LocalPosition: {x: 0.64799976, y: -0.554, z: 0.2980001}
+  m_LocalScale: {x: 0.5, y: 0.8, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1488804564}
   - {fileID: 1856189992}
-  m_Father: {fileID: 340652951}
+  m_Father: {fileID: 722828920}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1617839858
@@ -6142,6 +6191,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: dd4a4248d32bd9a4cb082a1c24c9f57f, type: 3}
   - {fileID: 8300000, guid: 00bd004d35ea8874aa3adee32f842c4d, type: 3}
   - {fileID: 8300000, guid: a9ae9642c7edd4042b0b0526dacff998, type: 3}
+  audioSource: {fileID: 0}
 --- !u!82 &1690013406
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6560,6 +6610,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a5b6ba3c4a04a2f4ca156fa3da87afb2, type: 3}
   - {fileID: 8300000, guid: 0a9ef3be9bab60a4dbf0b8efb2395461, type: 3}
   - {fileID: 8300000, guid: 26253f408b4662246be105f35db14222, type: 3}
+  audioSource: {fileID: 0}
 --- !u!82 &1746140985
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7341,6 +7392,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 14dfa80747713bf41adacb48b719875f, type: 3}
   - {fileID: 8300000, guid: a5b4dc4e65bc14846aecae3a96c4f337, type: 3}
   - {fileID: 8300000, guid: 9fd57378cc8e0c445adddff65bf92320, type: 3}
+  audioSource: {fileID: 0}
 --- !u!82 &1856189994
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7354,7 +7406,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 166de97f15c34664bb21b3d2a1575486, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.75
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0

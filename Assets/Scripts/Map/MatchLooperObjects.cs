@@ -6,8 +6,9 @@ public class MatchLooperObjects : MonoBehaviour {
     public SceneLooper sceneLooper;
     [Header("Config")]
     public int countOverwrite = 0;
+    [Header("State")]
+    public List<GameObject> matchingObjects;
 
-    private List<GameObject> matchingObjects;
     private PlayerReference playerReference;
 
     void Start() {

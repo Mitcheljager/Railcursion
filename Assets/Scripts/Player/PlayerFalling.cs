@@ -35,8 +35,6 @@ public class PlayerFalling : MonoBehaviour {
     void Update() {
         MoveWhileFalling();
 
-        Debug.Log(highestVelocityWhileFalling);
-
         if (!playerMovement.isGrounded) {
             hasLanded = false;
             MoveWhileFalling();
