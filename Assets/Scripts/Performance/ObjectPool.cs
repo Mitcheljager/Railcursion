@@ -30,7 +30,6 @@ public class ObjectPool : MonoBehaviour {
     }
 
     public IEnumerator DelaySetInactive(GameObject gameObject, float delay) {
-        Debug.Log("object: " + gameObject);
         yield return new WaitForSeconds(delay);
         gameObject.SetActive(false);
     }

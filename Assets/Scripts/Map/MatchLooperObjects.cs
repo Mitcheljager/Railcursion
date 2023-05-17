@@ -6,12 +6,14 @@ public class MatchLooperObjects : MonoBehaviour {
     public SceneLooper sceneLooper;
     [Header("Config")]
     public float countMultiplier = 1f;
+    public bool requiresOwner = true;
     [Header("State")]
     public List<GameObject> matchingObjects;
 
     private PlayerReference playerReference;
 
     void Start() {
+        sceneLooper = FindObjectOfType<SceneLooper>();
         playerReference = GetComponent<PlayerReference>();
 
         DuplicateObjects();

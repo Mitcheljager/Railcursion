@@ -1,6 +1,7 @@
 using UnityEngine;
+using FishNet.Object;
 
-public class PlayerJump : MonoBehaviour {
+public class PlayerJump : NetworkBehaviour {
     [Header("Config")]
     public AudioHelper[] audioHelpers;
     [Header("Config")]
@@ -20,13 +21,18 @@ public class PlayerJump : MonoBehaviour {
     void Update() {
         if (!playerMovement.isGrounded) hasJumped = false;
 
+        if (!base.IsOffline && !base.IsOwner) return;
+
         if (Input.GetKeyDown(KeyCode.Space)) isJumping = true;
         if (Input.GetKeyUp(KeyCode.Space)) isJumping = false;
 
-        if (playerMovement.isGrounded && isJumping && !hasJumped) Jump();
+        if (playerMovement.isGrounded && isJumping) Jump();
     }
 
+    [ServerRpc(RunLocally = true)]
     private void Jump() {
+        if (hasJumped) return;
+
         Debug.Log("Jump");
 
         hasJumped = true;
@@ -34,6 +40,11 @@ public class PlayerJump : MonoBehaviour {
         float jumpVelocity = Mathf.Sqrt(jumpForce * 2f * playerMovement.gravity);
         playerMovement.velocity = playerMovement.gravityDirection * jumpVelocity * -1f;
 
+        PlayAudio();
+    }
+
+    [ObserversRpc(RunLocally = true)]
+    private void PlayAudio() {
         foreach(AudioHelper audioHelper in audioHelpers) {
             audioHelper.PlayRandomClip();
         }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using FishNet.Object;
 
-public class PlayerGravityControls : MonoBehaviour {
+public class PlayerGravityControls : NetworkBehaviour {
     [Header("Config")]
     public Transform playerTransform;
     public Transform cameraTransform;
@@ -25,12 +26,14 @@ public class PlayerGravityControls : MonoBehaviour {
         characterController = GetComponent<CharacterController>();
         playerMovement = GetComponent<PlayerMovement>();
 
-        volume.profile.TryGet(out colorAdjustments);
+        // volume.profile.TryGet(out colorAdjustments);
 
-        HueShift();
+        // HueShift();
     }
 
     void Update() {
+        if (!base.IsOffline && !base.IsOwner) return;
+
         if (Input.GetKeyDown(KeyCode.Z)) SetGravityDirection();
         if (!isRotating) return;
 
@@ -60,7 +63,7 @@ public class PlayerGravityControls : MonoBehaviour {
 
         playerMovement.velocity = Vector3.zero;
 
-        HueShift();
+        // HueShift();
     }
 
     private void RotatePlayer() {

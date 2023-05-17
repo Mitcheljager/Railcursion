@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
+using FishNet.Object;
 
-public class Railgun : MonoBehaviour {
+public class Railgun : NetworkBehaviour {
     [Header("Config")]
     public Transform cameraTransform;
     public int maxDistance = 1000;
@@ -23,7 +24,7 @@ public class Railgun : MonoBehaviour {
     [Header("Mask")]
     public LayerMask layerMask;
     [Header("State")]
-    public float currentCooldown = 0f;
+    public float currentCooldown = 1f;
     public float currentRecoilTimer = 0f;
 
     private ObjectPool objectPool;
@@ -41,19 +42,19 @@ public class Railgun : MonoBehaviour {
             MoveRecoil();
         }
 
-        if (currentCooldown > 0f) {
-            currentCooldown -= Time.deltaTime;
-            return;
-        }
+        if (currentCooldown > 0f) currentCooldown -= Time.deltaTime;
 
-        if (!Input.GetMouseButton(0)) return;
+        if ((base.IsOffline || base.IsOwner) && Input.GetMouseButton(0)) Fire();
+    }
+
+    [ServerRpc]
+    private void Fire() {
+        Debug.Log("Fire");
+
+        if (currentCooldown > 0f) return;
 
         currentCooldown = cooldown;
         currentRecoilTimer = recoilDuration + recoilRecoveryDuration;
-
-        foreach (AudioHelper audioHelper in audioHelpers){
-            audioHelper.PlayRandomClip();
-        }
 
         GameObject target = GetTarget();
 
@@ -67,8 +68,6 @@ public class Railgun : MonoBehaviour {
     }
 
     public GameObject GetTarget() {
-        Debug.Log("Fire!");
-
 		RaycastHit raycastHit;
 		Vector3 position = cameraTransform.position;
 		Vector3 target = position + cameraTransform.forward * maxDistance;
@@ -77,12 +76,15 @@ public class Railgun : MonoBehaviour {
         Debug.DrawLine(position, target, Color.red);
 
         if (!Physics.Linecast(position, target, out raycastHit, layerMask)) {
+            PlayAudio();
             ShowEffects(direction, maxEffectDistance);
             return null;
         }
 
         float distance = Vector3.Distance(effectOrigin.position, raycastHit.point);
         direction = (raycastHit.point - effectOrigin.position).normalized;
+
+        PlayAudio();
         ShowEffects(direction, distance);
 
         Debug.DrawLine(position, raycastHit.transform.position, Color.yellow);
@@ -93,8 +95,17 @@ public class Railgun : MonoBehaviour {
         return raycastHit.collider.gameObject;
 	}
 
+    [ObserversRpc(RunLocally = true)]
+    private void PlayAudio() {
+        Debug.Log("Fire: Play Audio");
+        foreach (AudioHelper audioHelper in audioHelpers){
+            audioHelper.PlayRandomClip();
+        }
+    }
+
+    [ObserversRpc(RunLocally = true)]
     private void ShowEffects(Vector3 direction, float length) {
-        Debug.Log("Create effects");
+        Debug.Log("Fire: Create effects");
         ShowObjectFromObjectPool(effectOrigin.position, direction, length);
 
         foreach(GameObject matchingObject in matchLooperObjects.matchingObjects) {

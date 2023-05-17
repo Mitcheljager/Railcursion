@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : NetworkBehaviour {
     [Header("Components")]
     public CharacterController controller;
     public PlayerState playerState;
@@ -21,21 +24,14 @@ public class PlayerMovement : MonoBehaviour {
     public LayerMask groundMask;
 
     [Header("State")]
-    public float currentSpeed;
-    public Vector3 move;
-    public Vector3 velocity;
-    public float inputX;
-    public float inputZ;
-    public bool isGrounded = false;
+    [SyncVar(Channel = Channel.Unreliable)] public float currentSpeed;
+    [SyncVar(Channel = Channel.Unreliable)] public Vector3 move;
+    [SyncVar(Channel = Channel.Unreliable)] public Vector3 velocity;
+    [SyncVar(Channel = Channel.Unreliable)] public float inputX;
+    [SyncVar(Channel = Channel.Unreliable)] public float inputZ;
+    [SyncVar(Channel = Channel.Unreliable)] public bool isGrounded = false;
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.R)) {
-            controller.enabled = false; // Disable collision
-            transform.position = new Vector3(0, 2, 0);
-            controller.enabled = true; // Enable collision
-            playerState.isDead = false;
-        }
-
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         // Apply downwords velocity of player is not on the ground
@@ -46,6 +42,14 @@ public class PlayerMovement : MonoBehaviour {
         if (move.magnitude == 0f) currentSpeed = 0f;
 
         if (playerState.isDead) return;
+        if (!base.IsOffline && !base.IsOwner) return;
+
+        if (Input.GetKeyDown(KeyCode.R)) {
+            controller.enabled = false; // Disable collision
+            transform.position = new Vector3(0, 2, 0);
+            controller.enabled = true; // Enable collision
+            playerState.isDead = false;
+        }
 
         SetRunning();
         SetMovement();
@@ -70,12 +74,13 @@ public class PlayerMovement : MonoBehaviour {
         if (move.magnitude > 1) move /= move.magnitude;
 
         controller.Move(move * currentSpeed * Time.deltaTime);
-        velocity += gravityDirection * gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
 
-        // Limit velocity
+        velocity += gravityDirection * gravity * Time.deltaTime;
         float velocityMagnitude = velocity.magnitude;
         if (velocityMagnitude > maxVelocity) velocity = velocity.normalized * maxVelocity;
+
+        controller.Move(velocity * Time.deltaTime);
+
     }
 
     public bool IsGravityPositive() {

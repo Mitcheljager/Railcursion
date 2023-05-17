@@ -1,11 +1,24 @@
 using UnityEngine;
+using FishNet.Object;
 
-public class PlayerCamera : MonoBehaviour {
+public class PlayerCamera : NetworkBehaviour {
     public float mouseSensitivity = 25f;
     public Transform playerBody;
     public PlayerState playerState;
+    public SkinnedMeshRenderer meshRenderer;
 
     private float xRotation = 0f;
+
+    public override void OnStartClient() {
+        base.OnStartClient();
+        if (!base.IsOffline && !base.IsOwner) return;
+
+        Camera cam = GetComponent<Camera>();
+        AudioListener audioListener = GetComponent<AudioListener>();
+        cam.enabled = true;
+        audioListener.enabled = true;
+        meshRenderer.enabled = false;
+    }
 
     void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -13,6 +26,8 @@ public class PlayerCamera : MonoBehaviour {
     }
 
     void Update() {
+        if (!base.IsOffline && !base.IsOwner) return;
+
         if(Cursor.lockState != CursorLockMode.Locked) return;
         if (playerState.isDead) return;
 

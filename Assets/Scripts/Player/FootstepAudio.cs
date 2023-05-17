@@ -19,7 +19,7 @@ public class FootstepAudio : MonoBehaviour {
             return;
         }
 
-        if (playerMovement.move.magnitude == 0f) return;
+        if (playerMovement.move.magnitude < 0.2f) return;
         if (!playerMovement.isGrounded) return;
 
         if (playerMovement.currentSpeed > playerMovement.baseSpeed) audioHelperRunning.PlayRandomClip();

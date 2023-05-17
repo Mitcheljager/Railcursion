@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Object;
 
-public class PlayerDash : MonoBehaviour {
+public class PlayerDash : NetworkBehaviour {
     [Header("Config")]
     public AudioHelper audioHelper;
     [Header("Dash")]
@@ -20,6 +21,7 @@ public class PlayerDash : MonoBehaviour {
     }
 
     void Update() {
+        if (!base.IsOffline && !base.IsOwner) return;
         if (playerState.isDead) return;
 
         if (playerMovement.isGrounded) canDash = true;

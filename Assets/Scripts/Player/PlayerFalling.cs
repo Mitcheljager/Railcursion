@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Object;
 
-public class PlayerFalling : MonoBehaviour {
+public class PlayerFalling : NetworkBehaviour {
     [Header("Audio Falling")]
     public AudioSource audioSource;
     public float maximumVolume = 0.2f;
@@ -65,6 +66,8 @@ public class PlayerFalling : MonoBehaviour {
     }
 
     private void MoveWhileFalling() {
+        if (!base.IsOffline && !base.IsOwner) return;
+
         float distance = playerMovement.velocity.magnitude == 0f ? 0f : maxDistanceWhileFalling * (1f / maximumVelocity * playerMovement.velocity.magnitude);
         if (!playerMovement.IsGravityPositive()) distance *= -5f;
         Vector3 targetPosition = new Vector3(0, distance, 0);
