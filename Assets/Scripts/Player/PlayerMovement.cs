@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using FishNet.Transporting;
 
 public class PlayerMovement : NetworkBehaviour {
     [Header("Components")]
@@ -23,13 +22,18 @@ public class PlayerMovement : NetworkBehaviour {
     public float groundDistance = 0.25f;
     public LayerMask groundMask;
 
-    [Header("State")]
-    [SyncVar(Channel = Channel.Unreliable)] public float currentSpeed;
-    [SyncVar(Channel = Channel.Unreliable)] public Vector3 move;
-    [SyncVar(Channel = Channel.Unreliable)] public Vector3 velocity;
-    [SyncVar(Channel = Channel.Unreliable)] public float inputX;
-    [SyncVar(Channel = Channel.Unreliable)] public float inputZ;
-    [SyncVar(Channel = Channel.Unreliable)] public bool isGrounded = false;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner), Header("State")]
+    public float currentSpeed { get; [ServerRpc(RunLocally = true)] set; } = 0f;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public Vector3 move { get; [ServerRpc(RunLocally = true)] set; } = Vector3.zero;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public Vector3 velocity { get; [ServerRpc(RunLocally = true)] set; } = Vector3.zero;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public float inputX { get; [ServerRpc(RunLocally = true)] set; } = 0f;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public float inputZ { get; [ServerRpc(RunLocally = true)] set; } = 0f;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public bool isGrounded { get; [ServerRpc(RunLocally = true)] set; } = false;
 
     void Update() {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -41,15 +45,18 @@ public class PlayerMovement : NetworkBehaviour {
         currentSpeed = baseSpeed;
         if (move.magnitude == 0f) currentSpeed = 0f;
 
-        if (playerState.isDead) return;
         if (!base.IsOffline && !base.IsOwner) return;
 
         if (Input.GetKeyDown(KeyCode.R)) {
             controller.enabled = false; // Disable collision
-            transform.position = new Vector3(0, 2, 0);
+            transform.position = new Vector3(5, 2, 5);
             controller.enabled = true; // Enable collision
-            playerState.isDead = false;
+            gravityDirection = new Vector3(0f, -1f, 0f);
+
+            playerState.Respawn();
         }
+
+        if (playerState.isDead) return;
 
         SetRunning();
         SetMovement();
@@ -66,24 +73,29 @@ public class PlayerMovement : NetworkBehaviour {
     }
 
     private void SetMovement() {
-        inputX = Input.GetAxis("Horizontal");
-        inputZ = Input.GetAxis("Vertical");
+        SetMovementValues();
+        controller.Move(move * currentSpeed * Time.deltaTime);
+
+        SetVelocityValues();
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void SetMovementValues() {
+        inputX = Input.GetAxisRaw("Horizontal");
+        inputZ = Input.GetAxisRaw("Vertical");
 
         move = transform.right * inputX + transform.forward * inputZ;
 
-        if (move.magnitude > 1) move /= move.magnitude;
+        if (move.magnitude > 1) move.Normalize();
+    }
 
-        controller.Move(move * currentSpeed * Time.deltaTime);
-
+    private void SetVelocityValues() {
         velocity += gravityDirection * gravity * Time.deltaTime;
         float velocityMagnitude = velocity.magnitude;
         if (velocityMagnitude > maxVelocity) velocity = velocity.normalized * maxVelocity;
-
-        controller.Move(velocity * Time.deltaTime);
-
     }
 
     public bool IsGravityPositive() {
-        return velocity.y * (gravityDirection.x + gravityDirection.y + gravityDirection.z) > 0;
+        return (velocity.x + velocity.y + velocity.z) * (gravityDirection.x + gravityDirection.y + gravityDirection.z) > 0;
     }
 }

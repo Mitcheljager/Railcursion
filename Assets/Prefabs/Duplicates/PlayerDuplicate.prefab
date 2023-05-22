@@ -115,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerState: {fileID: 0}
   playerMovement: {fileID: 0}
+  matchLooperObjects: {fileID: 0}
 --- !u!1 &5632487996247070631
 GameObject:
   m_ObjectHideFlags: 0

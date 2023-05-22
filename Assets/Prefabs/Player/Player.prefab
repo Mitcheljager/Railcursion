@@ -1,5 +1,104 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2762375935609942768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8006858351445442816}
+  - component: {fileID: 1542591766942341862}
+  - component: {fileID: 6994699298293443152}
+  - component: {fileID: 6612004186843191571}
+  m_Layer: 0
+  m_Name: Fog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8006858351445442816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762375935609942768}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 300, y: 300, z: 300}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8360164009467756803}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1542591766942341862
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762375935609942768}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &6994699298293443152
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762375935609942768}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: eb34e38dfe7e876459ca25e002b000f4, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6612004186843191571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2762375935609942768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b23cd259a2dc8b4a8c6f109e7321242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 9
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
 --- !u!1 &8360164007890448093
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +154,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -142,6 +241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 14
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips:
@@ -346,6 +448,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 18
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips:
@@ -410,7 +515,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -497,6 +602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 13
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips:
@@ -632,7 +740,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 70
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -719,6 +827,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 15
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips:
@@ -803,7 +914,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 70
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -890,6 +1001,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 16
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips:
@@ -1046,6 +1160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 17
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips:
@@ -1110,7 +1227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 969b906813238234ca41f7520e213fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 8360164009467756807}
+  playerReference: {fileID: 8360164009467756812}
   audioHelperWalking: {fileID: 8360164007890448091}
   audioHelperRunning: {fileID: 8360164008853140591}
 --- !u!1 &8360164009046939964
@@ -1168,7 +1285,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -1255,6 +1372,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 11
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1.1
   audioClips: []
@@ -1314,7 +1434,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 70
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -1401,6 +1521,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be000946ccb83b4b8671e7f9900edbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 10
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
   minPitch: 0.9
   maxPitch: 1
   audioClips:
@@ -1505,6 +1628,7 @@ Transform:
   - {fileID: 6185528504205099933}
   - {fileID: 8360164008331953984}
   - {fileID: 8360164008456005395}
+  - {fileID: 8006858351445442816}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1618,12 +1742,12 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  currentSpeed: 0
-  move: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  inputX: 0
-  inputZ: 0
-  isGrounded: 0
+  <currentSpeed>k__BackingField: 0
+  <move>k__BackingField: {x: 0, y: 0, z: 0}
+  <velocity>k__BackingField: {x: 0, y: 0, z: 0}
+  <inputX>k__BackingField: 0
+  <inputZ>k__BackingField: 0
+  <isGrounded>k__BackingField: 0
 --- !u!114 &8360164009467756801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1663,7 +1787,6 @@ MonoBehaviour:
   playerTransform: {fileID: 8360164009467756803}
   cameraTransform: {fileID: 8360164009820763596}
   rotationSpeed: 250
-  volume: {fileID: 0}
 --- !u!114 &8360164009467756815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,7 +1802,6 @@ MonoBehaviour:
   prefab: {fileID: 4138355334505047678, guid: d6c29faab3e69294a945962c1cff5506, type: 3}
   sceneLooper: {fileID: 0}
   countMultiplier: 0.75
-  requiresOwner: 1
   matchingObjects: []
 --- !u!114 &8360164009467756813
 MonoBehaviour:
@@ -1693,6 +1815,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3609a75fc2114646aaf73e52e65b87a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 3
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
+  playerName: 
   isDead: 0
 --- !u!114 &8360164009467756812
 MonoBehaviour:
@@ -1708,6 +1834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerState: {fileID: 8360164009467756813}
   playerMovement: {fileID: 8360164009467756807}
+  matchLooperObjects: {fileID: 0}
 --- !u!114 &8360164009467756810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1720,7 +1847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2990f29aa005e2546933ee0f0c1d65f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 8360164009467756808}
   _networkObjectCache: {fileID: 8360164009467756808}
   audioHelper: {fileID: 8360164009046939963}
@@ -1738,7 +1865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ac7e4289bd6d974d86f8a9dc99b6ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 8360164009467756808}
   _networkObjectCache: {fileID: 8360164009467756808}
   audioSource: {fileID: 8360164009963381335}
@@ -1769,12 +1896,22 @@ MonoBehaviour:
   - {fileID: 8360164009467756807}
   - {fileID: 8360164009467756801}
   - {fileID: 8360164009467756814}
+  - {fileID: 8360164009467756813}
   - {fileID: 8360164009467756810}
   - {fileID: 8360164009467756811}
   - {fileID: 5687169258370480194}
   - {fileID: 8360164009820763594}
   - {fileID: 8100101002278698774}
-  - {fileID: 0}
+  - {fileID: 6612004186843191571}
+  - {fileID: 8360164009077198289}
+  - {fileID: 8360164009046939963}
+  - {fileID: 8360164009775109021}
+  - {fileID: 8360164008102764350}
+  - {fileID: 8360164007890448091}
+  - {fileID: 8360164008853140591}
+  - {fileID: 8360164008895290847}
+  - {fileID: 8360164008897428179}
+  - {fileID: 8360164007990548015}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -1801,7 +1938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 8360164009467756808}
   _networkObjectCache: {fileID: 8360164009467756808}
   _componentConfiguration: 0
@@ -1975,6 +2112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c924276bc0d397f43ae8557734b1de38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 12
+  _addedNetworkObject: {fileID: 8360164009467756808}
+  _networkObjectCache: {fileID: 8360164009467756808}
+  playerState: {fileID: 8360164009467756813}
   cameraTransform: {fileID: 8360164009820763596}
   maxDistance: 1000
   cooldown: 1
@@ -2141,7 +2282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e77b833a8bc0f40a6723521b0614eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 8360164009467756808}
   _networkObjectCache: {fileID: 8360164009467756808}
   mouseSensitivity: 100
@@ -2160,7 +2301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 8360164009467756808}
   _networkObjectCache: {fileID: 8360164009467756808}
   _componentConfiguration: 0

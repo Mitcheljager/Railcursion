@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Object;
 
-public class AudioHelper : MonoBehaviour {
+public class AudioHelper : NetworkBehaviour {
     [Header("AudioHelper Config")]
     public float minPitch = 1f;
     public float maxPitch = 1f;
@@ -15,13 +16,46 @@ public class AudioHelper : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayRandomClip() {
+    public void PlayRandomClip(bool leaveAtPosition = true, List<GameObject> matchingObjects = null) {
+        Debug.Log("play audio");
         audioSource.pitch = Random.Range(minPitch, maxPitch);
-        audioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+
+        AudioClip randomClip = audioClips[Random.Range(0, audioClips.Length)];
+
+        if (leaveAtPosition && !base.IsOffline && !base.IsOwner) {
+            Vector3 position = GetNearestObjectPosition(matchingObjects);
+            AudioSource.PlayClipAtPoint(randomClip, position, audioSource.volume);
+        } else audioSource.PlayOneShot(randomClip);
     }
 
     public void PlayWithRandomPitch() {
         audioSource.pitch = Random.Range(minPitch, maxPitch);
         audioSource.Play();
+    }
+
+    public Vector3 GetNearestObjectPosition(List<GameObject> matchingObjects) {
+        if (matchingObjects == null || matchingObjects.Count == 0) return transform.position;
+
+        Vector3 cameraPosition = Camera.main.transform.position;
+        Transform originalTransform = transform;
+        Vector3 originalOffset = originalTransform.localPosition;
+
+        GameObject closestObject = gameObject;
+        float closestDistance = Vector3.Distance(cameraPosition, originalTransform.position);
+
+        // Only loop through the first 8, as any other will always be further away
+        for (int i = 0; i < 8; i++) {
+            GameObject matchingObject = matchingObjects[i];
+            if (matchingObject == null) continue;
+
+            float distance = Vector3.Distance(cameraPosition, matchingObject.transform.position);
+
+            if (distance > closestDistance) continue;
+
+            closestObject = matchingObject;
+            closestDistance = distance;
+        }
+
+        return closestObject.transform.position;
     }
 }

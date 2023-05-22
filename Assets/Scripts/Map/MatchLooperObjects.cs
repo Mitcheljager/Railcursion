@@ -6,7 +6,6 @@ public class MatchLooperObjects : MonoBehaviour {
     public SceneLooper sceneLooper;
     [Header("Config")]
     public float countMultiplier = 1f;
-    public bool requiresOwner = true;
     [Header("State")]
     public List<GameObject> matchingObjects;
 

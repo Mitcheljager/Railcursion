@@ -6,6 +6,7 @@ using FishNet.Object;
 
 public class Railgun : NetworkBehaviour {
     [Header("Config")]
+    public PlayerState playerState;
     public Transform cameraTransform;
     public int maxDistance = 1000;
     public float cooldown = 2f;
@@ -47,16 +48,25 @@ public class Railgun : NetworkBehaviour {
         if ((base.IsOffline || base.IsOwner) && Input.GetMouseButton(0)) Fire();
     }
 
-    [ServerRpc]
     private void Fire() {
-        Debug.Log("Fire");
-
+        if (playerState.isDead) return;
         if (currentCooldown > 0f) return;
 
-        currentCooldown = cooldown;
+        Debug.Log("Fire");
+
         currentRecoilTimer = recoilDuration + recoilRecoveryDuration;
 
-        GameObject target = GetTarget();
+        GameObject target = CreateShot();
+
+        ServerFire();
+
+        currentCooldown = cooldown;
+    }
+
+    [ServerRpc]
+    private void ServerFire() {
+        GameObject target = CreateShot();
+        ObserversFire();
 
         if (!target) return;
         if (target.tag != "Player" && target.tag != "DuplicatedPlayer") return;
@@ -64,19 +74,24 @@ public class Railgun : NetworkBehaviour {
         PlayerReference playerReference = target.GetComponent<PlayerReference>();
 
         if (playerReference.playerState.isDead) return;
-        playerReference.playerState.isDead = true;
+
+        playerReference.playerState.Kill(playerState.playerName);
     }
 
-    public GameObject GetTarget() {
+    [ObserversRpc(ExcludeOwner = true)]
+    private void ObserversFire() {
+        GameObject target = CreateShot();
+    }
+
+    public GameObject CreateShot() {
+        if (currentCooldown > 0f) return null;
+
 		RaycastHit raycastHit;
 		Vector3 position = cameraTransform.position;
 		Vector3 target = position + cameraTransform.forward * maxDistance;
         Vector3 direction = (target - position).normalized;
 
-        Debug.DrawLine(position, target, Color.red);
-
         if (!Physics.Linecast(position, target, out raycastHit, layerMask)) {
-            PlayAudio();
             ShowEffects(direction, maxEffectDistance);
             return null;
         }
@@ -84,26 +99,17 @@ public class Railgun : NetworkBehaviour {
         float distance = Vector3.Distance(effectOrigin.position, raycastHit.point);
         direction = (raycastHit.point - effectOrigin.position).normalized;
 
-        PlayAudio();
         ShowEffects(direction, distance);
-
-        Debug.DrawLine(position, raycastHit.transform.position, Color.yellow);
-
-        // if (raycastHit.collider == null) Physics.SphereCast(position, 0.1f, direction, out raycastHit, maxDistance, layerMask);
-		// if (raycastHit.collider == null) return null;
 
         return raycastHit.collider.gameObject;
 	}
 
-    [ObserversRpc(RunLocally = true)]
     private void PlayAudio() {
-        Debug.Log("Fire: Play Audio");
         foreach (AudioHelper audioHelper in audioHelpers){
-            audioHelper.PlayRandomClip();
+            audioHelper.PlayRandomClip(true, matchLooperObjects.matchingObjects);
         }
     }
 
-    [ObserversRpc(RunLocally = true)]
     private void ShowEffects(Vector3 direction, float length) {
         Debug.Log("Fire: Create effects");
         ShowObjectFromObjectPool(effectOrigin.position, direction, length);
@@ -113,6 +119,8 @@ public class Railgun : NetworkBehaviour {
 
             ShowObjectFromObjectPool(effectOrigin.position + offset, direction, length);
         }
+
+        PlayAudio();
     }
 
     private void ShowObjectFromObjectPool(Vector3 position, Vector3 direction, float length) {

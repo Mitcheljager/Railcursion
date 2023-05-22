@@ -37,6 +37,8 @@ public class SceneLooper : MonoBehaviour {
             }
         }
 
+        duplicatedObjects.Sort((a, b) => a.transform.position.magnitude.CompareTo(b.transform.position.magnitude));
+
         return duplicatedObjects;
     }
 }

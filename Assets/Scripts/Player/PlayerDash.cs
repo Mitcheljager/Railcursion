@@ -21,18 +21,20 @@ public class PlayerDash : NetworkBehaviour {
     }
 
     void Update() {
-        if (!base.IsOffline && !base.IsOwner) return;
         if (playerState.isDead) return;
-
         if (playerMovement.isGrounded) canDash = true;
 
-        if (!canDash) return;
+        if (!base.IsOffline && !base.IsOwner) return;
+
         if (playerMovement.isGrounded) return;
 
         if (Input.GetKeyDown(KeyCode.Space)) Dash();
     }
 
+    [ServerRpc(RunLocally = true)]
     private void Dash() {
+        if (!canDash) return;
+
         Vector3 dashDirection = playerMovement.move.normalized;
 
         // Get the up vector relative to the player's orientation
