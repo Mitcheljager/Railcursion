@@ -27,7 +27,8 @@ public class SceneLooper : MonoBehaviour {
                         GameObject duplicate = Instantiate(gameObject);
                         duplicate.transform.position += currentOffset;
                         if (applyOffsetComponent) {
-                            MatchingLoopedObject matchingLoopedObject = duplicate.AddComponent<MatchingLoopedObject>();
+                            MatchingLoopedObject matchingLoopedObject = duplicate.GetComponent<MatchingLoopedObject>();
+                            if (matchingLoopedObject == null) matchingLoopedObject = duplicate.AddComponent<MatchingLoopedObject>();
                             matchingLoopedObject.offset = duplicate.transform.position;
                         }
 

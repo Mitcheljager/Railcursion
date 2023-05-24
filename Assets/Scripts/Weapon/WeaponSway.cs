@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using FishNet.Object;
 
-public class WeaponSway : MonoBehaviour {
+public class WeaponSway : NetworkBehaviour {
     [Header("Config")]
     public float smoothnessMultiplier = 10f;
     public float distanceMultiplier = 1f;
 
     private void Update() {
+        if (!base.IsOffline && !base.IsOwner) return;
+
         // get mouse input
         float mouseX = Input.GetAxisRaw("Mouse X") * distanceMultiplier;
         float mouseY = Input.GetAxisRaw("Mouse Y") * distanceMultiplier;

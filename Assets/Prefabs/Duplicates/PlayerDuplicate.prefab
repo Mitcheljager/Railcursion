@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2743135598895060448}
   - component: {fileID: 6772235125105296205}
   - component: {fileID: -3157258159266839663}
+  - component: {fileID: 931570855304622876}
   m_Layer: 7
   m_Name: PlayerDuplicate
   m_TagString: DuplicatedPlayer
@@ -116,6 +117,20 @@ MonoBehaviour:
   playerState: {fileID: 0}
   playerMovement: {fileID: 0}
   matchLooperObjects: {fileID: 0}
+--- !u!114 &931570855304622876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4138355334505047678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d75174ccc3f3d046b56dfcb32bee97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childMatchingTransform: {fileID: 537509912774064138}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &5632487996247070631
 GameObject:
   m_ObjectHideFlags: 0

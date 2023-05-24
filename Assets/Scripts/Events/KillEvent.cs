@@ -3,19 +3,21 @@ using UnityEngine.Events;
 
 public class KillEvent : MonoBehaviour {
     public class KillEventData {
-        public string killerName;
-        public string victimName;
+        public PlayerState killer;
+        public PlayerState victim;
 
-        public KillEventData(string killerName, string victimName) {
-            this.killerName = killerName;
-            this.victimName = victimName;
+        public KillEventData(PlayerState killer, PlayerState victim) {
+            this.killer = killer;
+            this.victim = victim;
         }
     }
 
     public static UnityEvent<KillEventData> OnKillEvent = new UnityEvent<KillEventData>();
 
-    public static void DispatchKillEvent(string killerName, string victimName) {
-        KillEventData eventData = new KillEventData(killerName, victimName);
+    public static void Dispatch(PlayerState killer, PlayerState victim) {
+        Debug.Log("Dispatching kill event");
+
+        KillEventData eventData = new KillEventData(killer, victim);
         OnKillEvent.Invoke(eventData);
     }
 }

@@ -17,7 +17,6 @@ public class AudioHelper : NetworkBehaviour {
     }
 
     public void PlayRandomClip(bool leaveAtPosition = true, List<GameObject> matchingObjects = null) {
-        Debug.Log("play audio");
         audioSource.pitch = Random.Range(minPitch, maxPitch);
 
         AudioClip randomClip = audioClips[Random.Range(0, audioClips.Length)];

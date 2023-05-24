@@ -75,7 +75,7 @@ public class Railgun : NetworkBehaviour {
 
         if (playerReference.playerState.isDead) return;
 
-        playerReference.playerState.Kill(playerState.playerName);
+        playerReference.playerState.Kill(playerState);
     }
 
     [ObserversRpc(ExcludeOwner = true)]
@@ -84,8 +84,6 @@ public class Railgun : NetworkBehaviour {
     }
 
     public GameObject CreateShot() {
-        if (currentCooldown > 0f) return null;
-
 		RaycastHit raycastHit;
 		Vector3 position = cameraTransform.position;
 		Vector3 target = position + cameraTransform.forward * maxDistance;
@@ -105,13 +103,16 @@ public class Railgun : NetworkBehaviour {
 	}
 
     private void PlayAudio() {
+        if (currentCooldown > 0f) return;
+
         foreach (AudioHelper audioHelper in audioHelpers){
             audioHelper.PlayRandomClip(true, matchLooperObjects.matchingObjects);
         }
     }
 
     private void ShowEffects(Vector3 direction, float length) {
-        Debug.Log("Fire: Create effects");
+        if (currentCooldown > 0f) return;
+
         ShowObjectFromObjectPool(effectOrigin.position, direction, length);
 
         foreach(GameObject matchingObject in matchLooperObjects.matchingObjects) {

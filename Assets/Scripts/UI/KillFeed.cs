@@ -19,7 +19,7 @@ public class KillFeed : NetworkBehaviour {
     }
 
     private void HandleKillEvent(KillEvent.KillEventData eventData) {
-        CreateKillFeedItem(eventData.killerName, eventData.victimName);
+        CreateKillFeedItem(eventData.killer.playerName, eventData.victim.playerName);
     }
 
     [ObserversRpc]
