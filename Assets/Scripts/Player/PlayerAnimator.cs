@@ -18,5 +18,6 @@ public class PlayerAnimator : MonoBehaviour {
         animator.SetFloat("Input X", playerMovement.inputX);
         animator.SetFloat("Input Z", playerMovement.inputZ);
         animator.SetBool("Is Grounded", playerMovement.isGrounded);
+        animator.SetBool("Is Dead", playerState.isDead);
     }
 }

@@ -5,7 +5,7 @@ public class PlayerCamera : NetworkBehaviour {
     public float mouseSensitivity = 25f;
     public Transform playerBody;
     public PlayerState playerState;
-    public SkinnedMeshRenderer meshRenderer;
+    public SkinnedMeshRenderer[] meshRenderers;
 
     private float xRotation = 0f;
 
@@ -17,7 +17,10 @@ public class PlayerCamera : NetworkBehaviour {
         AudioListener audioListener = GetComponent<AudioListener>();
         cam.enabled = true;
         audioListener.enabled = true;
-        meshRenderer.enabled = false;
+
+        foreach(SkinnedMeshRenderer meshRenderer in meshRenderers) {
+            meshRenderer.enabled = false;
+        }
     }
 
     void Start() {

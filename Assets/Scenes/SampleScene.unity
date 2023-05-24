@@ -4730,7 +4730,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh32400
+  m_Name: pb_Mesh30466
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6570,6 +6570,16 @@ PrefabInstance:
       propertyPath: _componentIndexCache
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4550132706628236806, guid: a6b48311ad64a0c45bd0accfbfc89cbe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5181468312590291888, guid: a6b48311ad64a0c45bd0accfbfc89cbe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5687169258370480194, guid: a6b48311ad64a0c45bd0accfbfc89cbe,
         type: 3}
       propertyPath: _networkObjectCache
@@ -6834,7 +6844,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _sceneNetworkObjects.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1542140256}
     - target: {fileID: 8360164009467756808, guid: a6b48311ad64a0c45bd0accfbfc89cbe,
         type: 3}
       propertyPath: _sceneNetworkObjects.Array.data[1]
@@ -6909,6 +6919,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8792822215493610853, guid: a6b48311ad64a0c45bd0accfbfc89cbe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6b48311ad64a0c45bd0accfbfc89cbe, type: 3}
