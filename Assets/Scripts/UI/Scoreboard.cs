@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class Scoreboard : MonoBehaviour{
+    public PlayersManager playersManager;
     public Transform wrapperTransform;
     public GameObject scoreboardItemPrefab;
 
@@ -18,20 +19,14 @@ public class Scoreboard : MonoBehaviour{
     }
 
     private void UpdateScoreboard() {
-        Debug.Log("Updating scoreboard");
-
-        // TODO: Refactor to not be horrible
-
         DestroyCurrentItems();
 
-        PlayerStats[] players = FindObjectsOfType<PlayerStats>();
-
-        foreach(PlayerStats player in players) {
+        foreach(PlayerReference player in playersManager.players) {
             GameObject item = Instantiate(scoreboardItemPrefab);
             item.transform.parent = wrapperTransform;
 
             ScoreboardItem scoreboardItem = item.GetComponent<ScoreboardItem>();
-            scoreboardItem.SetText(player);
+            scoreboardItem.SetText(player.playerStats, playersManager.currentPlayer == player);
         }
     }
 

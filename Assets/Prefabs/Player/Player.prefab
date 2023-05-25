@@ -1840,6 +1840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerState: {fileID: 8360164009467756813}
   playerMovement: {fileID: 8360164009467756807}
+  playerStats: {fileID: 0}
   matchLooperObjects: {fileID: 0}
 --- !u!114 &8360164009467756810
 MonoBehaviour:
@@ -2018,7 +2019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8360164009742471048}
   m_LocalRotation: {x: -0, y: -0, z: 0.000000014901161, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6249998, z: 0}
+  m_LocalPosition: {x: -0.102, y: 0.069, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2521,11 +2522,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3039459131687664506, guid: 1a86d1bf63564fa4799214a0f190478b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3066858359280164128, guid: 1a86d1bf63564fa4799214a0f190478b,
         type: 3}

@@ -11,6 +11,8 @@ public class PlayerState : NetworkBehaviour {
     public override void OnStartClient() {
         base.OnStartClient();
 
+        AddPlayerToPlayersManager();
+
         if (!base.IsOffline && !base.IsOwner) return;
 
         string[] possibleNames = { "Reinhardt", "Cassidy", "Tracer", "Roadhog", "Brigitte", "Mei", "Mercy", "Baptiste", "Moira", "Junkrat", "Pharah" };
@@ -29,5 +31,16 @@ public class PlayerState : NetworkBehaviour {
     [ServerRpc]
     public void Respawn() {
         isDead = false;
+    }
+
+    private void AddPlayerToPlayersManager() {
+        PlayersManager playersManager = GameObject.FindObjectOfType<PlayersManager>();
+
+        if (playersManager == null) return;
+
+        PlayerReference playerReference = GetComponent<PlayerReference>();
+
+        playersManager.players.Add(playerReference);
+        if (!base.IsOffline && base.IsOwner) playersManager.currentPlayer = GetComponent<PlayerReference>();
     }
 }
