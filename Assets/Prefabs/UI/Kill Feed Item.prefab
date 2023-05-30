@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 5024132912186994008}
   - component: {fileID: 3910833348588671537}
   - component: {fileID: 2826722727223342300}
+  - component: {fileID: 2321997917920387541}
   m_Layer: 5
   m_Name: Kill Feed Item
   m_TagString: Untagged
@@ -306,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059290ad85b87d34aabf1c527fd94a5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationHelper: {fileID: 2321997917920387541}
   killerText: {fileID: 5024132913248667404}
   victimText: {fileID: 5024132911230415702}
   image: {fileID: 5024132911928635861}
@@ -326,6 +328,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2321997917920387541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5024132912186994006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a0aa904b73b684c86d8aa4b2da1292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5024132913248667402
 GameObject:
   m_ObjectHideFlags: 0

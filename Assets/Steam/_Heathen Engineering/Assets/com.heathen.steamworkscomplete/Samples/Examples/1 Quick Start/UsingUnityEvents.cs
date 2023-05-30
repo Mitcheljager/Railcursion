@@ -1,0 +1,33 @@
+#if HE_SYSCORE && (STEAMWORKSNET || FACEPUNCH) && !DISABLESTEAMWORKS 
+using HeathenEngineering.SteamworksIntegration;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace HeathenEngineering.DEMO
+{
+    [System.Obsolete("This script is for demonstration purposes ONLY")]
+    public class UsingUnityEvents : MonoBehaviour
+    {
+        public void HandleOverlayActived(bool arg0)
+        {
+            Debug.Log(nameof(HandleOverlayActived) + " called");
+        }
+
+        public void HandleGameLobbyJoinRequested(LobbyData lobby, UserData user)
+        {
+            Debug.Log(nameof(HandleGameLobbyJoinRequested) + " called");
+        }
+
+        public void HandleGameServerChangeRequested(string connection, string password)
+        {
+            Debug.Log(nameof(HandleGameServerChangeRequested) + " called");
+        }
+
+        public void HandleRichPresenceJoinRequested(UserData user, string connection)
+        {
+            Debug.Log(nameof(HandleRichPresenceJoinRequested) + " called");
+        }
+    }
+}
+#endif

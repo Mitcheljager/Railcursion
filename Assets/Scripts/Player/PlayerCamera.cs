@@ -6,6 +6,7 @@ public class PlayerCamera : NetworkBehaviour {
     public Transform playerBody;
     public PlayerState playerState;
     public SkinnedMeshRenderer[] meshRenderers;
+    public GameObject[] objectsToDisable;
 
     private float xRotation = 0f;
 
@@ -20,6 +21,10 @@ public class PlayerCamera : NetworkBehaviour {
 
         foreach(SkinnedMeshRenderer meshRenderer in meshRenderers) {
             meshRenderer.enabled = false;
+        }
+
+        foreach(GameObject objectToDisable in objectsToDisable) {
+            objectToDisable.SetActive(false);
         }
     }
 

@@ -17,6 +17,8 @@ public class PositionBorders : MonoBehaviour {
         Vector3 size = parentRenderer.bounds.size;
         transform.position = parentRenderer.transform.position + new Vector3(0, 0.0001f + (size.y / 2), 0);
 
+        Debug.Log(size);
+
         if (z) {
             foreach(float direction in new float[] { 1f, -1f }) {
                 GameObject zOuterBorder = Instantiate(outerBorder);
@@ -31,7 +33,7 @@ public class PositionBorders : MonoBehaviour {
                 Renderer zInnerBorderRenderer = zInnerBorder.GetComponent<Renderer>();
                 zInnerBorder.transform.localPosition = new Vector3(0, transform.localPosition.y, ((size.z / 2) - (zInnerBorderRenderer.bounds.size.x / 2) - zOuterBorderSizeX) * direction);
                 zInnerBorder.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
-                zInnerBorder.transform.localScale = new Vector3(zInnerBorder.transform.localScale.x, 1f, size.x / 10);
+                zInnerBorder.transform.localScale = new Vector3(zInnerBorder.transform.localScale.x, 1f, (size.x - (x ? zInnerBorder.transform.localScale.z : 0)) / 10);
                 zInnerBorder.transform.parent = transform;
             }
         }
@@ -50,7 +52,7 @@ public class PositionBorders : MonoBehaviour {
                 Renderer xInnerBorderRenderer = xInnerBorder.GetComponent<Renderer>();
                 xInnerBorder.transform.localPosition = new Vector3(((size.x / 2) - (xInnerBorderRenderer.bounds.size.x / 2) - xOuterBorderSizeX) * direction, transform.localPosition.y, 0);
                 xInnerBorder.transform.localRotation = Quaternion.Euler(0f, -180f, 0f);
-                xInnerBorder.transform.localScale = new Vector3(xInnerBorder.transform.localScale.x, 1f, size.z / 10);
+                xInnerBorder.transform.localScale = new Vector3(xInnerBorder.transform.localScale.x, 1f, (size.z - (z ? xInnerBorder.transform.localScale.y : 0)) / 10);
                 xInnerBorder.transform.parent = transform;
             }
         }

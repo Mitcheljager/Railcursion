@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class KillFeedItem : MonoBehaviour {
     [Header("Components")]
+    public AnimationHelper animationHelper;
     public TextMeshProUGUI killerText;
     public TextMeshProUGUI victimText;
     public Image image;
@@ -22,7 +21,7 @@ public class KillFeedItem : MonoBehaviour {
         victimText.text = victimName;
 
         SetWidth();
-        StartCoroutine(SlideIn());
+        animationHelper.SlideIn(targetHeight, slideDuration);
 
         Destroy(gameObject, 5);
     }
@@ -45,38 +44,5 @@ public class KillFeedItem : MonoBehaviour {
         anchoredPosition.x = killerTextSize.x + 25;
         anchoredPosition.y = 0;
         iconRectTransform.anchoredPosition = anchoredPosition;
-    }
-
-    private IEnumerator SlideIn() {
-        float timer = 0f;
-
-        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0;
-
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        Vector2 sizeDelta = rectTransform.sizeDelta;
-        sizeDelta.y = 0;
-        rectTransform.sizeDelta = sizeDelta;
-
-        while (timer < slideDuration) {
-            float currentAlpha = Mathf.Lerp(0f, 1f, timer / slideDuration);
-            float currentHeight = Mathf.Lerp(0f, targetHeight, timer / slideDuration);
-
-            canvasGroup.alpha = currentAlpha;
-
-            sizeDelta = rectTransform.sizeDelta;
-            sizeDelta.y = currentHeight;
-            rectTransform.sizeDelta = sizeDelta;
-
-            timer += Time.deltaTime;
-
-            yield return null;
-        }
-
-        // Ensure the final height matches the target height exactly
-        canvasGroup.alpha = 1f;
-        Vector2 finalSizeDelta = rectTransform.sizeDelta;
-        finalSizeDelta.y = targetHeight;
-        rectTransform.sizeDelta = finalSizeDelta;
     }
 }

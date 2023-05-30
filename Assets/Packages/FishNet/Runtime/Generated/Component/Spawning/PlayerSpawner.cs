@@ -102,7 +102,7 @@ namespace FishNet.Component.Spawning
             nob.transform.SetPositionAndRotation(position, rotation);
             _networkManager.ServerManager.Spawn(nob, conn);
 
-            //If there are no global scenes 
+            //If there are no global scenes
             if (_addToDefaultScene)
                 _networkManager.SceneManager.AddOwnerToDefaultScene(nob);
 
