@@ -16,13 +16,13 @@ public class AudioHelper : NetworkBehaviour {
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayRandomClip(bool leaveAtPosition = true, List<GameObject> matchingObjects = null) {
+    public void PlayRandomClip(bool leaveAtPosition = true, List<GameObject> matchingObjects = null, int loopMax = 8) {
         audioSource.pitch = Random.Range(minPitch, maxPitch);
 
         AudioClip randomClip = audioClips[Random.Range(0, audioClips.Length)];
 
         if (leaveAtPosition && !base.IsOffline && !base.IsOwner) {
-            Vector3 position = GetNearestObjectPosition(matchingObjects);
+            Vector3 position = GetNearestObjectPosition(matchingObjects, loopMax);
             AudioSource.PlayClipAtPoint(randomClip, position, audioSource.volume);
         } else audioSource.PlayOneShot(randomClip);
     }
@@ -32,7 +32,7 @@ public class AudioHelper : NetworkBehaviour {
         audioSource.Play();
     }
 
-    public Vector3 GetNearestObjectPosition(List<GameObject> matchingObjects) {
+    public Vector3 GetNearestObjectPosition(List<GameObject> matchingObjects, int loopMax) {
         if (matchingObjects == null || matchingObjects.Count == 0) return transform.position;
 
         Vector3 cameraPosition = Camera.main.transform.position;
@@ -43,7 +43,7 @@ public class AudioHelper : NetworkBehaviour {
         float closestDistance = Vector3.Distance(cameraPosition, originalTransform.position);
 
         // Only loop through the first 8, as any other will always be further away
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Mathf.Min(loopMax, matchingObjects.Count); i++) {
             GameObject matchingObject = matchingObjects[i];
             if (matchingObject == null) continue;
 

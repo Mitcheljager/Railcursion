@@ -8,6 +8,7 @@ public class PlayerMovement : NetworkBehaviour {
     [Header("Components")]
     public CharacterController controller;
     public PlayerState playerState;
+    public PlayerCamera playerCamera;
 
     [Header("Movement")]
     public float baseSpeed = 2f;
@@ -81,8 +82,8 @@ public class PlayerMovement : NetworkBehaviour {
     }
 
     private void SetMovementValues() {
-        inputX = Input.GetAxisRaw("Horizontal");
-        inputZ = Input.GetAxisRaw("Vertical");
+        inputX = isGrounded ? Input.GetAxisRaw("Horizontal") : Input.GetAxis("Horizontal");
+        inputZ = isGrounded ? Input.GetAxisRaw("Vertical") : Input.GetAxis("Vertical");
 
         move = transform.right * inputX + transform.forward * inputZ;
 

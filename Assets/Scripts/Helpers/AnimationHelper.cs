@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimationHelper : MonoBehaviour {
-    private CanvasGroup canvasGroup;
-    private RectTransform rectTransform;
+    public CanvasGroup canvasGroup;
+    public RectTransform rectTransform;
 
     private bool isAnimating = false;
 
     void Start() {
-        canvasGroup = GetComponent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
+        if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null) rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void FlyIn(float distance = 40f, float duration = 0.5f) {
+        if (isAnimating) return;
+        StartCoroutine(FlyInCoroutine(distance, duration));
     }
 
     public void SlideIn(float targetHeight = 40f, float duration = 0.5f) {
@@ -29,6 +34,41 @@ public class AnimationHelper : MonoBehaviour {
         if (isAnimating) return;
         if (!force && canvasGroup.alpha == 1f) return;
         StartCoroutine(FadeInCoroutine(duration));
+    }
+
+    private IEnumerator FlyInCoroutine(float distance, float duration) {
+        isAnimating = true;
+        float timer = 0f;
+
+        canvasGroup.alpha = 0;
+
+        Vector2 startPosition = rectTransform.anchoredPosition;
+        float startTop = startPosition.y;
+        float targetTop = startTop - distance;
+        rectTransform.anchoredPosition = startPosition;
+
+        while (timer < duration) {
+            float currentAlpha = Mathf.Lerp(0f, 1f, timer / duration);
+            float currentTop = Mathf.Lerp(startTop, targetTop, timer / duration);
+
+            canvasGroup.alpha = currentAlpha;
+
+            Vector2 currentPosition = rectTransform.anchoredPosition;
+            currentPosition.y = startTop - currentTop;
+            rectTransform.anchoredPosition = currentPosition;
+
+            timer += Time.deltaTime;
+
+            yield return null;
+        }
+
+        // Ensure the final position matches the target position exactly
+        canvasGroup.alpha = 1f;
+        Vector2 finalPosition = rectTransform.anchoredPosition;
+        finalPosition.y = startPosition.y - targetTop;
+        rectTransform.anchoredPosition = finalPosition;
+
+        isAnimating = false;
     }
 
     private IEnumerator SlideInCoroutine(float targetHeight, float duration) {

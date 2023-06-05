@@ -5,6 +5,7 @@ public class PlayerReference : MonoBehaviour {
 
     [HideInInspector] public PlayerMovement playerMovement;
     [HideInInspector] public PlayerStats playerStats;
+    [HideInInspector] public PlayerInventory playerInventory;
     [HideInInspector] public MatchLooperObjects matchLooperObjects;
 
     void Start() {
@@ -12,6 +13,7 @@ public class PlayerReference : MonoBehaviour {
 
         playerMovement = playerObject.GetComponent<PlayerMovement>();
         playerStats = playerObject.GetComponent<PlayerStats>();
+        playerInventory = playerObject.GetComponent<PlayerInventory>();
         matchLooperObjects = playerObject.GetComponent<MatchLooperObjects>();
     }
 }

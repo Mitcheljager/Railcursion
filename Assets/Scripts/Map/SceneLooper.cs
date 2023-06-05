@@ -10,7 +10,7 @@ public class SceneLooper : MonoBehaviour {
         DuplicateSceneObjects(objectsToDuplicate);
     }
 
-    public List<GameObject> DuplicateSceneObjects(List<GameObject> objects, bool applyOffsetComponent = false, float countMultiplier = 1) {
+    public List<GameObject> DuplicateSceneObjects(List<GameObject> objects, bool applyOffsetComponent = false, float countMultiplier = 1, ObjectPool objectPool = null) {
         // Calculate the total number of duplicates in each direction
         Vector3 counts = duplicationCount * countMultiplier;
         List<GameObject> duplicatedObjects = new List<GameObject>();
@@ -24,7 +24,9 @@ public class SceneLooper : MonoBehaviour {
                         Vector3 currentOffset = new Vector3(i * duplicationOffset.x, j * duplicationOffset.y, k * duplicationOffset.z);
                         if (currentOffset.magnitude == 0) continue;
 
-                        GameObject duplicate = Instantiate(gameObject);
+                        // Get from pool instead of Instantiate
+
+                        GameObject duplicate = objectPool == null ? Instantiate(gameObject) : objectPool.GetObject();
                         duplicate.transform.position += currentOffset;
                         if (applyOffsetComponent) {
                             MatchingLoopedObject matchingLoopedObject = duplicate.GetComponent<MatchingLoopedObject>();

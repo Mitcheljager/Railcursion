@@ -6,7 +6,7 @@ public class ObjectPool : MonoBehaviour {
     public GameObject prefab;
     public int poolCount = 50;
 
-    private List<GameObject> pooledObjects = new List<GameObject>();
+    [HideInInspector] public List<GameObject> pooledObjects = new List<GameObject>();
 
     void Start() {
         for (int i = 0; i < poolCount; i++) {

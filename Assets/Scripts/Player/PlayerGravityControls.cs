@@ -10,10 +10,12 @@ public class PlayerGravityControls : NetworkBehaviour {
     public Transform playerTransform;
     public Transform cameraTransform;
     public float rotationSpeed = 5f;
+    public float momentumMultiplier = 1f;
 
     private PlayerMovement playerMovement;
 
     private Quaternion targetRotation;
+    private Quaternion rotationLastFrame;
     private bool isRotating = false;
 
     void Start() {
@@ -29,6 +31,15 @@ public class PlayerGravityControls : NetworkBehaviour {
         RotatePlayer();
     }
 
+    void LateUpdate() {
+        if (!isRotating) return;
+
+        Quaternion rotationDifference = Quaternion.Inverse(rotationLastFrame) * playerTransform.rotation;
+        cameraTransform.rotation = cameraTransform.rotation * rotationDifference;
+
+        rotationLastFrame = playerTransform.rotation;
+    }
+
     private void SetGravityDirection() {
         Vector3 currentDirection = playerMovement.gravityDirection;
         Vector3 lookDirection = cameraTransform.forward;
@@ -41,6 +52,8 @@ public class PlayerGravityControls : NetworkBehaviour {
         else if (lookDirection.z < -0.75f) playerMovement.gravityDirection = Vector3.back;
         else if (lookDirection.z > 0.75f) playerMovement.gravityDirection = Vector3.forward;
 
+        Physics.gravity = playerMovement.gravityDirection.normalized; // This might not be correct
+
         Debug.Log(playerMovement.gravityDirection + " " + currentDirection);
 
         if (lookDirection == currentDirection) return;
@@ -49,7 +62,7 @@ public class PlayerGravityControls : NetworkBehaviour {
         targetRotation = Quaternion.FromToRotation(Vector3.down, playerMovement.gravityDirection.normalized);
         isRotating = true;
 
-        playerMovement.velocity = Vector3.zero;
+        playerMovement.velocity = playerMovement.velocity * momentumMultiplier;
     }
 
     private void RotatePlayer() {

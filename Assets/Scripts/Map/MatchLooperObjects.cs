@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class MatchLooperObjects : MonoBehaviour {
     public GameObject prefab;
-    public SceneLooper sceneLooper;
     public Transform childMatcherTransform;
     [Header("Config")]
+    public bool keepMatchingTransform = true;
     public float countMultiplier = 1f;
+    public bool useObjectPool = false;
+    public ObjectPool objectPool;
     [Header("State")]
     public List<GameObject> matchingObjects;
+
+    [HideInInspector] public SceneLooper sceneLooper;
 
     private PlayerReference playerReference;
 
@@ -20,6 +24,8 @@ public class MatchLooperObjects : MonoBehaviour {
     }
 
     void Update() {
+        if (!keepMatchingTransform) return;
+
         // Match the transform of the duplicated objects to the transform of the original object
         foreach (GameObject matchingObject in matchingObjects) {
             MatchingLoopedObject matchingLoopedObject = matchingObject.GetComponent<MatchingLoopedObject>();
@@ -39,7 +45,7 @@ public class MatchLooperObjects : MonoBehaviour {
         List<GameObject> gameObjects = new List<GameObject>();
         gameObjects.Add(prefab);
 
-        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true, countMultiplier);
+        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true, countMultiplier, objectPool);
         if (playerReference != null) {
             foreach (GameObject gameObject in matchingObjects) {
                 PlayerReference gameObjectPlayerReference = gameObject.GetComponent<PlayerReference>();
