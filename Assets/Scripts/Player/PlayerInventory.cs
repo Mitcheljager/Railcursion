@@ -10,7 +10,8 @@ public class PlayerInventory : NetworkBehaviour {
     public Throwable holdingThrowable;
 
     void Update() {
-        if (holdingThrowable != null && Input.GetKey(KeyCode.G)) holdingThrowable.Throw(this);
+        if (!base.IsOffline && !base.IsOwner) return;
+        if (Input.GetKeyDown(KeyCode.G)) Throw();
     }
 
     void OnDestroy() {
@@ -22,12 +23,21 @@ public class PlayerInventory : NetworkBehaviour {
         return Input.GetKeyDown(KeyCode.F);
     }
 
-    public void PickUp(Pickupable pickupable) {
-        if (pickupable.itemType == PickupableType.Throwable) PickUpThrowable(pickupable);
+    public void PickUp(Pickupable pickupable, ObjectPool objectPool) {
+        if (pickupable.itemType == PickupableType.Throwable) PickUpThrowable(pickupable, objectPool);
     }
 
-    private void PickUpThrowable(Pickupable pickupable) {
+    private void PickUpThrowable(Pickupable pickupable, ObjectPool objectPool) {
         GameObject gameObject = Instantiate(pickupable.prefab);
+        base.Spawn(gameObject);
         holdingThrowable = gameObject.GetComponent<Throwable>();
+        if (objectPool != null) holdingThrowable.objectPool = objectPool;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void Throw() {
+        if (holdingThrowable == null) return;
+
+        holdingThrowable.Throw(this);
     }
 }

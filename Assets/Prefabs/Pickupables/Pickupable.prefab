@@ -648,7 +648,7 @@ MonoBehaviour:
   prefab: {fileID: 6365383496039964104, guid: 0afc587f03f32a14a8d91879e72dd0de, type: 3}
   childMatcherTransform: {fileID: 0}
   keepMatchingTransform: 0
-  countMultiplier: 1
+  countMultiplier: 0.5
   useObjectPool: 0
   objectPool: {fileID: 0}
   matchingObjects: []
@@ -679,15 +679,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c612b43e78864fd408ebad0ac0298638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
   itemName: Grenade
   cooldown: 3
   itemType: 0
   prefab: {fileID: 6158432680516124228, guid: f265dc2e5efc38b4ea0f728426760470, type: 3}
+  itemObjectPool: {fileID: 0}
   orb: {fileID: 1712842639603212015}
   UI: {fileID: 9153022695661006763}
   text: {fileID: 165037924042981018}
   inWorldCanvas: {fileID: 696572504237613119}
   cooldownImage: {fileID: 1650772889327718893}
+  playerInside: {fileID: 0}
   cooldownTimer: 0
 --- !u!4 &1712842638939374211 stripped
 Transform:

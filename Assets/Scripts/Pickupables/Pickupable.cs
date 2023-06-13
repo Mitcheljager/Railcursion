@@ -3,29 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using FishNet.Object;
 
 public enum PickupableType {
     Throwable,
     Usable
 }
 
-public class Pickupable : MonoBehaviour {
+public class Pickupable : NetworkBehaviour {
     public string itemName = "";
     public float cooldown = 1f;
     public PickupableType itemType;
     public GameObject prefab;
+    public ObjectPool itemObjectPool;
     public GameObject orb;
     public GameObject UI;
     public TextMeshProUGUI text;
     public Canvas inWorldCanvas;
     public Image cooldownImage;
 
-    private PlayerReference playerInside;
+    public PlayerReference playerInside;
     private AnimationHelper animationHelper;
 
     public float cooldownTimer = 0f;
 
+    private PlayersManager playersManager;
+
     void Start() {
+        playersManager = FindObjectOfType<PlayersManager>();
         animationHelper = GetComponent<AnimationHelper>();
 
         cooldownImage.type = Image.Type.Filled;
@@ -34,7 +39,7 @@ public class Pickupable : MonoBehaviour {
     }
 
     void Update() {
-        if (cooldownTimer > 0f) UpdateCooldown();
+        if (cooldownTimer >= 0) UpdateCooldown();
     }
 
     void OnTriggerEnter(Collider player) {
@@ -42,6 +47,7 @@ public class Pickupable : MonoBehaviour {
 
         PlayerReference playerReference = player.gameObject.GetComponent<PlayerReference>();
         if (playerReference == null) return;
+        if (playerReference != playersManager.currentPlayer) return;
 
         playerInside = playerReference;
 
@@ -51,39 +57,42 @@ public class Pickupable : MonoBehaviour {
     void OnTriggerStay(Collider player) {
         if (cooldownTimer > 0f) return;
         if (player.tag != "Player") return;
-        if (!playerInside) return;
+        if (playerInside == null) return;
 
+        SetUIText();
+
+        if (playerInside != playersManager.currentPlayer) return;
         if (!playerInside.playerInventory.IsPickingUp()) return;
 
-        playerInside.playerInventory.PickUp(this);
-
-        SetCooldown();
+        PickUpForPlayer(playerInside.playerInventory);
     }
 
     void OnTriggerExit(Collider player) {
         if (player.tag != "Player") return;
-        Reset();
+        if (playerInside == null) return;
+        Unset();
     }
 
     void OnDisable() {
-        Reset();
+        Unset();
     }
 
     private void SetUIText() {
-        animationHelper.FlyIn(10f, 0.2f);
-        UI.SetActive(true);
+        if (!UI.activeInHierarchy) {
+            animationHelper.FlyIn(10f, 0.2f);
+            UI.SetActive(true);
+        }
+
         text.text = cooldownTimer > 0f ? "Unavailable" : "Pick up <" + itemName + ">";
     }
 
-    private void Reset() {
+    private void Unset() {
         playerInside = null;
-        UI.SetActive(false);
+        HideUI();
     }
 
-    private void SetCooldown() {
-        cooldownTimer = cooldown;
-        inWorldCanvas.gameObject.SetActive(true);
-        orb.SetActive(false);
+    private void HideUI() {
+        UI.SetActive(false);
     }
 
     private void UpdateCooldown() {
@@ -94,5 +103,39 @@ public class Pickupable : MonoBehaviour {
             inWorldCanvas.gameObject.SetActive(false);
             orb.SetActive(true);
         }
+    }
+
+    private void SetCooldownUI(bool setTimer = true) {
+        if (cooldownTimer > 0f) return;
+
+        if (setTimer) cooldownTimer = cooldown;
+
+        inWorldCanvas.gameObject.SetActive(true);
+        orb.SetActive(false);
+    }
+
+    private void PickUpForPlayer(PlayerInventory playerInventory) {
+        if (cooldownTimer > 0f) return;
+
+        SetCooldownUI(false);
+        HideUI();
+
+        ServerPickUp(playerInventory);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ServerPickUp(PlayerInventory playerInventory) {
+        if (cooldownTimer > 0f) return;
+
+        playerInventory.PickUp(this, itemObjectPool);
+
+        SetCooldownUI();
+        SetCooldownForObservers();
+    }
+
+    [ObserversRpc]
+    private void SetCooldownForObservers() {
+        SetCooldownUI();
+        HideUI();
     }
 }

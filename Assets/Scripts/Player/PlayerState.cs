@@ -19,7 +19,7 @@ public class PlayerState : NetworkBehaviour {
         playerName = possibleNames[Random.Range(0, possibleNames.Length)];
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void Kill(PlayerState killer) {
         Debug.Log("Player State: Kill");
 

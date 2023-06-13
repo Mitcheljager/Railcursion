@@ -1715,7 +1715,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1809,10 +1809,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4138355334505047678, guid: d6c29faab3e69294a945962c1cff5506, type: 3}
-  sceneLooper: {fileID: 0}
   childMatcherTransform: {fileID: 8360164009820763596}
+  keepMatchingTransform: 1
   countMultiplier: 0.75
+  useObjectPool: 0
+  objectPool: {fileID: 0}
   matchingObjects: []
+  sceneLooper: {fileID: 0}
 --- !u!114 &8360164009467756813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2200,6 +2203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 4662568731369538969, guid: ff937ea436050024ead439ee559e28a0, type: 3}
   poolCount: 200
+  pooledObjects: []
 --- !u!1 &8360164009820763585
 GameObject:
   m_ObjectHideFlags: 0
@@ -2229,7 +2233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8360164009820763585}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.675, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

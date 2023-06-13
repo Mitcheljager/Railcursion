@@ -14,22 +14,18 @@ public class ScaleInOnEnable : MonoBehaviour {
     void OnEnable() {
 		startScale = transform.localScale;
         currentScale = 0f;
-
-		StartCoroutine(StartScaling());
     }
 
-	private IEnumerator StartScaling() {
-		while (currentScale < 1f) {
-			currentScale += ratePerSecond * Time.deltaTime;
-			if (currentScale > 1f) currentScale = 1f;
+    void Update() {
+        if (currentScale >= 1f) return;
 
-			transform.localScale = new Vector3(
-				x ? currentScale * startScale.x : startScale.x,
-				y ? currentScale * startScale.y : startScale.y,
-				z ? currentScale * startScale.z : startScale.z
-			);
+        currentScale += ratePerSecond * Time.deltaTime;
+        if (currentScale > 1f) currentScale = 1f;
 
-			yield return null;
-		}
-	}
+        transform.localScale = new Vector3(
+            x ? currentScale * startScale.x : startScale.x,
+            y ? currentScale * startScale.y : startScale.y,
+            z ? currentScale * startScale.z : startScale.z
+        );
+    }
 }

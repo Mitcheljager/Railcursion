@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
+using FishNet.Connection;
 using FishNet.Object.Synchronizing;
 
 public class PlayerMovement : NetworkBehaviour {
@@ -37,6 +38,8 @@ public class PlayerMovement : NetworkBehaviour {
     public bool isGrounded { get; [ServerRpc(RunLocally = true)] set; } = false;
 
     void Update() {
+        if (!base.IsOffline && !base.IsOwner) return;
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         // Apply downwords velocity of player is not on the ground
@@ -45,8 +48,6 @@ public class PlayerMovement : NetworkBehaviour {
 
         currentSpeed = baseSpeed;
         if (move.magnitude == 0f) currentSpeed = 0f;
-
-        if (!base.IsOffline && !base.IsOwner) return;
 
         if (Input.GetKeyDown(KeyCode.R)) {
             controller.enabled = false; // Disable collision
