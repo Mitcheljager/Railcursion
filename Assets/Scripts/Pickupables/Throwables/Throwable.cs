@@ -13,7 +13,7 @@ public class Throwable : NetworkBehaviour {
     public Rigidbody body;
     public UnityEvent onThrowEvent;
 
-    [HideInInspector] public ObjectPool objectPool;
+    public ObjectPool objectPool;
 
     private bool thrown = false;
     private float gravity = 10f;
@@ -97,7 +97,7 @@ public class Throwable : NetworkBehaviour {
             float distance = Vector3.Distance(transform.position, player.transform.position);
             if (distance > radius) continue;
 
-            Debug.Log(player);
+            Debug.Log("Player in radius: " + player);
 
             playersInRadius.Add(player);
         }

@@ -25,7 +25,6 @@ public class SceneLooper : MonoBehaviour {
                         if (currentOffset.magnitude == 0) continue;
 
                         // Get from pool instead of Instantiate
-
                         GameObject duplicate = objectPool == null ? Instantiate(gameObject) : objectPool.GetObject();
                         duplicate.transform.position += currentOffset;
                         if (applyOffsetComponent) {

@@ -16,7 +16,7 @@ public class KnockbackGrenade : NetworkBehaviour {
     public float force = 20f;
     public float upForce = 5f;
 
-    void Start() {
+    void OnEnable() {
         matchLooperObjects.objectPool = throwable.objectPool;
     }
 
