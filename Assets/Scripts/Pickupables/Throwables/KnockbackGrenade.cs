@@ -59,6 +59,7 @@ public class KnockbackGrenade : NetworkBehaviour {
 
     [ObserversRpc]
     private void ObserversExplode() {
+        if (base.IsServer) return;
         Explode();
     }
 

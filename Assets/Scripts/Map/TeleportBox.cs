@@ -24,20 +24,32 @@ public class TeleportBox : MonoBehaviour {
 
         Vector3 playerPosition = player.transform.position;
         Vector3 boxPosition = transform.position;
-        Vector3 newPosition = playerPosition;
+        Vector3 difference = Vector3.zero;
 
-        if (playerPosition.y < boxPosition.y - size.y / 2) newPosition.y = playerPosition.y + size.y;
-        else if (playerPosition.y > boxPosition.y + size.y / 2) newPosition.y = playerPosition.y - size.y;
+        if (playerPosition.y < boxPosition.y - size.y / 2) difference.y = size.y;
+        else if (playerPosition.y > boxPosition.y + size.y / 2) difference.y = -size.y;
 
-        if (playerPosition.x < boxPosition.x - size.x / 2) newPosition.x = playerPosition.x + size.x;
-        else if (playerPosition.x > boxPosition.x + size.x / 2) newPosition.x = playerPosition.x - size.x;
+        if (playerPosition.x < boxPosition.x - size.x / 2) difference.x = size.x;
+        else if (playerPosition.x > boxPosition.x + size.x / 2) difference.x = -size.x;
 
-        if (playerPosition.z < boxPosition.z - size.z / 2) newPosition.z = playerPosition.z + size.z;
-        else if (playerPosition.z > boxPosition.z + size.z / 2) newPosition.z = playerPosition.z - size.z;
+        if (playerPosition.z < boxPosition.z - size.z / 2) difference.z = size.z;
+        else if (playerPosition.z > boxPosition.z + size.z / 2) difference.z = -size.z;
 
         characterController.enabled = false; // Disable collision
-        playerTransform.position = newPosition;
+        playerTransform.position = playerPosition + difference;
         characterController.enabled = true; // Enable collision
         characterController.Move(currentVelocity * Time.deltaTime); // Apply momentum
+
+        MoveOneShotAudio(difference);
+    }
+
+    private void MoveOneShotAudio(Vector3 difference) {
+        AudioSource[] allAudioSources = GameObject.FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in allAudioSources) {
+            if (audioSource.gameObject.name != "One shot audio") continue;
+
+            audioSource.transform.position += difference;
+        }
     }
 }

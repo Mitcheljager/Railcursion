@@ -2012,7 +2012,6 @@ MonoBehaviour:
   <SceneId>k__BackingField: 2510022318538704638
   <AssetPathHash>k__BackingField: 0
   _sceneNetworkObjects:
-  - {fileID: 0}
   - {fileID: 418187711}
   - {fileID: 1542140256}
   - {fileID: 1799161731}
@@ -4916,7 +4915,6 @@ MonoBehaviour:
   <SceneId>k__BackingField: 2510022322035774729
   <AssetPathHash>k__BackingField: 0
   _sceneNetworkObjects:
-  - {fileID: 0}
   - {fileID: 418187711}
   - {fileID: 1542140256}
   - {fileID: 1799161731}
@@ -6202,7 +6200,6 @@ MonoBehaviour:
   <SceneId>k__BackingField: 2510022321480807353
   <AssetPathHash>k__BackingField: 0
   _sceneNetworkObjects:
-  - {fileID: 0}
   - {fileID: 418187711}
   - {fileID: 1542140256}
   - {fileID: 1799161731}
