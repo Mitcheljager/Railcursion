@@ -9,6 +9,7 @@ public class MatchLooperObjects : MonoBehaviour {
     public float countMultiplier = 1f;
     public bool useObjectPool = false;
     public ObjectPool objectPool;
+    public bool cull = false;
     [Header("State")]
     public List<GameObject> matchingObjects;
 
@@ -45,7 +46,7 @@ public class MatchLooperObjects : MonoBehaviour {
         List<GameObject> gameObjects = new List<GameObject>();
         gameObjects.Add(prefab);
 
-        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true, countMultiplier, objectPool);
+        matchingObjects = sceneLooper.DuplicateSceneObjects(gameObjects, true, countMultiplier, objectPool, cull);
         if (playerReference != null) {
             foreach (GameObject gameObject in matchingObjects) {
                 PlayerReference gameObjectPlayerReference = gameObject.GetComponent<PlayerReference>();

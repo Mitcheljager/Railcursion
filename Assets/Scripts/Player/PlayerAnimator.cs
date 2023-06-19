@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour {
     public PlayerReference playerReference;
+    public Renderer skinnedRenderer;
 
-    private PlayerMovement playerMovement;
-    private PlayerState playerState;
-    private Animator animator;
+    public PlayerMovement playerMovement;
+    public PlayerState playerState;
+    public Animator animator;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -14,6 +15,8 @@ public class PlayerAnimator : MonoBehaviour {
     }
 
     void Update() {
+        if (!skinnedRenderer.enabled) return;
+
         animator.SetFloat("Speed", playerMovement.move.magnitude * (playerMovement.isRunning ? playerMovement.runSpeed : playerMovement.baseSpeed));
         animator.SetFloat("Input X", playerMovement.inputX);
         animator.SetFloat("Input Z", playerMovement.inputZ);
