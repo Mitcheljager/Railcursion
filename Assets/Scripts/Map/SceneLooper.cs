@@ -19,6 +19,7 @@ public class SceneLooper : MonoBehaviour {
     public List<GameObject> objectsToDuplicate;
     public Vector3 duplicationCount = new Vector3(3, 3, 3);
     public Vector3 duplicationOffset = new Vector3(100f, 100f, 100f);
+    public bool skipDiagonals = false;
     public bool useCulling = true;
 
     private List<CullingObject> cullingObjects = new List<CullingObject>();
@@ -39,10 +40,12 @@ public class SceneLooper : MonoBehaviour {
         // Iterate over the objects to duplicate
         foreach (GameObject gameObject in objects) {
             // Duplicate the object and position the duplicates in a grid pattern
-            for (int i = Mathf.RoundToInt(-counts.x); i <= Mathf.RoundToInt(counts.x); i++) {
-                for (int j = Mathf.RoundToInt(-counts.y); j <= Mathf.RoundToInt(counts.y); j++) {
-                    for (int k = Mathf.RoundToInt(-counts.z); k <= Mathf.RoundToInt(counts.z); k++) {
-                        Vector3 currentOffset = new Vector3(i * duplicationOffset.x, j * duplicationOffset.y, k * duplicationOffset.z);
+            for (int x = Mathf.RoundToInt(-counts.x); x <= Mathf.RoundToInt(counts.x); x++) {
+                for (int y = Mathf.RoundToInt(-counts.y); y <= Mathf.RoundToInt(counts.y); y++) {
+                    for (int z = Mathf.RoundToInt(-counts.z); z <= Mathf.RoundToInt(counts.z); z++) {
+                        if (skipDiagonals && x != 0 && (x != 0 || x != 0) && z != 0) continue;
+
+                        Vector3 currentOffset = new Vector3(x * duplicationOffset.x, y * duplicationOffset.y, z * duplicationOffset.z);
                         if (currentOffset.magnitude == 0) continue;
 
                         // Get from pool instead of Instantiate
